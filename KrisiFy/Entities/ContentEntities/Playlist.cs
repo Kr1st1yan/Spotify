@@ -9,13 +9,20 @@ namespace KrisiFy.Entities.ContentEntities
 {
     class Playlist : Content
     {
-        private HashSet<Song> songs = new HashSet<Song>();
+        private List<Song> songs = new List<Song>();
 
-        public Playlist(string name, DateTime duration, HashSet<Song> songs) : base(name, duration)
+
+        public Playlist(string name) : base(name)
+
+        {
+
+        }
+
+        public Playlist(string name, string duration, List<Song> songs) : base(name, duration)
         {
             this.songs = songs;
         }
 
-        internal HashSet<Song> Songs { get => songs; set => songs = value; }
+        internal List<Song> Songs { get => songs; set => songs = value; }
     }
 }

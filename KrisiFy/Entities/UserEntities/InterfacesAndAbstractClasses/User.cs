@@ -28,6 +28,7 @@ namespace KrisiFy.Entities.UserEntities.InterfacesAndAbstractClasses
         public string Username { get => username; set => username = value; }
         public string Password { get => password; set => password = value; }
         public string FullName { get => fullName; set => fullName = value; }
+
         public DateTime BirthDate { get => birthDate; set => birthDate = value; }
         public List<string> Genres { get => genres; set => genres = value; }
 
@@ -35,6 +36,6 @@ namespace KrisiFy.Entities.UserEntities.InterfacesAndAbstractClasses
 
         virtual public void playlistsPrint(){}
 
-        virtual public void songsInPlaylistsAndLengthPrint(){}
+        virtual public void songsAndLengthPrint(string playlistName){}
     }
 }

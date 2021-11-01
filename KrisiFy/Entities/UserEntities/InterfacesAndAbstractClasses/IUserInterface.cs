@@ -12,7 +12,7 @@ namespace KrisiFy.Interfaces
 
         void playlistsPrint();
 
-        void songsInPlaylistsAndLengthPrint();
+        void songsAndLengthPrint(string playlistName);
 
     }
 }

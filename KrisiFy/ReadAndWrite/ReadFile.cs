@@ -26,7 +26,7 @@ namespace KrisiFy.ReadAndWrite
 
             WriteOnFile writer = new WriteOnFile();
 
-            foreach (string line in System.IO.File.ReadLines("E:\\Spotify\\KrisiFy\\ReadAndWriteFiles\\KrisiFy.txt"))
+            foreach (string line in System.IO.File.ReadLines("E:\\Spotify\\Spotify\\KrisiFy\\ReadAndWriteFiles\\KrisiFy.txt"))
             {
                 if (line != null)
                 {

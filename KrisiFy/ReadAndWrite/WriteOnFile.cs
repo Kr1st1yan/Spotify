@@ -20,7 +20,7 @@ namespace KrisiFy.ReadAndWriteFiles
 
         public async Task ExampleAsync(string input)
         {
-            using StreamWriter file = new StreamWriter("E:\\Spotify\\KrisiFy\\ReadAndWriteFiles\\WriteFile.txt", append: true);
+            using StreamWriter file = new StreamWriter("E:\\Spotify\\Spotify\\KrisiFy\\ReadAndWriteFiles\\WriteFile.txt", append: true);
             await file.WriteLineAsync(input);
         }
 

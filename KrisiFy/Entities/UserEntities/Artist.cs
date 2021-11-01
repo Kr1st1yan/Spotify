@@ -10,13 +10,13 @@ namespace KrisiFy.Entities.UserEntities
 {
     class Artist : User
     {
-        private HashSet<Album> albums;
-        public Artist(string username, string password, string fullName, DateTime birthDate, List<string> genres, HashSet<Album> albums) : base(username, password, fullName, birthDate, genres)
+        private List<Album> albums;
+        public Artist(string username, string password, string fullName, DateTime birthDate, List<string> genres, List<Album> albums) : base(username, password, fullName, birthDate, genres)
         {
             this.Albums = albums;
         }
 
-        internal HashSet<Album> Albums { get => albums; set => albums = value; }
+        internal List<Album> Albums { get => albums; set => albums = value; }
 
         public override void infoPrint()
         {
@@ -28,9 +28,9 @@ namespace KrisiFy.Entities.UserEntities
             base.playlistsPrint();
         }
 
-        public override void songsInPlaylistsAndLengthPrint()
+        public override void songsAndLengthPrint(string playlistName)
         {
-            base.songsInPlaylistsAndLengthPrint();
+            base.songsAndLengthPrint(playlistName);
         }
     }
 }

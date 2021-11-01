@@ -12,7 +12,7 @@ namespace KrisiFy.Entities.ContentEntities
         private Artist artist;
         private string genre;
         private DateTime outYear;
-        public Album(string name, DateTime duration, HashSet<Song> songs, Artist artist, string genre, DateTime outYear) : base(name, duration, songs)
+        public Album(string name, string duration, List<Song> songs, Artist artist, string genre, DateTime outYear) : base(name, duration, songs)
         {
             this.Artist = artist;
             this.Genre = genre;
