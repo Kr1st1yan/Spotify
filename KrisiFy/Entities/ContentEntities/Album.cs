@@ -21,6 +21,6 @@ namespace KrisiFy.Entities.ContentEntities
 
         public string Genre { get => genre; set => genre = value; }
         public DateTime OutYear { get => outYear; set => outYear = value; }
-        internal Artist Artist { get => artist; set => artist = value; }
+        public Artist Artist { get => artist; set => artist = value; }
     }
 }

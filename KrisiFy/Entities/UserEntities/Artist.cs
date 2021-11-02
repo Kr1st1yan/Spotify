@@ -16,21 +16,331 @@ namespace KrisiFy.Entities.UserEntities
             this.Albums = albums;
         }
 
-        internal List<Album> Albums { get => albums; set => albums = value; }
+        public List<Album> Albums { get => albums; set => albums = value; }
 
         public override void infoPrint()
         {
-            base.infoPrint();
+            StringBuilder sb = new StringBuilder();
+            string outputString = String.Format("Username: {0}\nPassword: {1}\nFull name: {2}\nBirth date: {3}\nGenres: \n", Username, Password, FullName, BirthDate.ToString("dd/MM/yyyy"));
+            sb.Append(outputString);
+
+            if (Genres.Count == 0)
+            {
+                sb.Append("There are no genres.\n");
+            }
+            else
+            {
+                foreach (string genre in Genres)
+                {
+                    sb.Append(String.Format("    {0}\n", genre));
+                }
+            }
+
+
+
+            sb.Append(String.Format("Albums: \n"));
+
+            if (Albums.Count == 0)
+            {
+                sb.Append("There are no albums.\n");
+            }
+            else
+            {
+                int albumCounter = 1;
+
+                foreach (Album album in Albums)
+                {
+                    sb.Append(String.Format("{0}. {1}\n", albumCounter, album.Name));
+                    albumCounter++;
+                }
+            }
+            Console.WriteLine(sb.ToString());
         }
 
         public override void playlistsPrint()
         {
-            base.playlistsPrint();
+            StringBuilder sb = new StringBuilder();
+
+            if (Albums.Count == 0)
+            {
+                sb.Append("It is an empty collection.\n");
+            }
+            else
+            {
+                int albumsCounter = 1;
+
+                foreach (Album album in albums)
+                {
+
+                    sb.Append(String.Format("{0}. Album - {1}\n", albumsCounter, album.Name));
+
+                    if (album.Songs.Count == 0)
+                    {
+                        sb.Append("There are no songs in this album!\n");
+                    }
+                    else
+                    {
+                        int songCounter = 1;
+
+                        foreach (Song song in album.Songs)
+                        {
+                            sb.Append(String.Format("    {0}. {1}\n", songCounter, song.Name));
+                            songCounter++;
+                        }
+
+                    }
+                    albumsCounter++;
+
+                }
+            }
+            Console.WriteLine(sb.ToString());
+
+
         }
 
-        public override void songsAndLengthPrint(string playlistName)
+        public override void songsAndLengthPrint(string albumName)
         {
-            base.songsAndLengthPrint(playlistName);
+            int count = 0;
+            StringBuilder sb = new StringBuilder();
+
+            foreach (Album album in albums)
+            {
+                if (album.Name.Equals(albumName))
+                {
+                    count++;
+
+                    sb.Append(String.Format("Album name is {0}\nArtist: {1}\nGenre: {2}\nIt was out on {3}\n", album.Name,album.Artist.FullName,album.Genre,album.OutYear.ToString("dd/MM/yyyy")));
+
+                    if (album.Songs.Count == 0)
+                    {
+                        sb.Append("There are no songs in this album!\n");
+                    }
+                    else
+                    {
+                        int songCounter = 1;
+
+                        int allHours = 0;
+                        int allMinutes = 0;
+                        int allSeconds = 0;
+                        sb.Append(String.Format("The songs in the album are:\n"));
+                        foreach (Song song in album.Songs)
+                        {
+
+                            sb.Append(String.Format("    {0}. {1}\n", songCounter, song.Name));
+
+                            string[] data = song.Duration.Split(":");
+
+
+                            if (data.Length == 3)
+                            {
+                                int hours = int.Parse(data[0]);
+                                int minutes = int.Parse(data[1]);
+                                int seconds = int.Parse(data[2]);
+
+                                allSeconds += seconds;
+                                if (allSeconds > 59)
+                                {
+                                    allMinutes++;
+                                    allSeconds -= 60;
+                                }
+
+                                allMinutes += minutes;
+                                if (allMinutes > 59)
+                                {
+                                    allHours++;
+                                    allMinutes -= 60;
+                                }
+                                allHours += hours;
+
+                            }
+                            else
+                            {
+                                int minutes = int.Parse(data[0]);
+                                int seconds = int.Parse(data[1]);
+
+                                allSeconds += seconds;
+                                if (allSeconds > 59)
+                                {
+                                    allMinutes++;
+                                    allSeconds -= 60;
+                                }
+
+                                allMinutes += minutes;
+                                if (allMinutes > 59)
+                                {
+                                    allHours++;
+                                    allMinutes -= 60;
+                                }
+                            }
+
+                        }
+                        string outputHours = allHours.ToString();
+                        string outputMinutes = allMinutes.ToString();
+                        string outputSeconds = allSeconds.ToString();
+                        if (allHours < 10)
+                        {
+                            outputHours = "0" + allHours.ToString();
+                        }
+                        if (allMinutes < 10)
+                        {
+                            outputMinutes = "0" + allMinutes.ToString();
+                        }
+                        if (allSeconds < 10)
+                        {
+                            outputSeconds = "0" + allSeconds.ToString();
+                        }
+
+                        sb.Append(String.Format("Album length is: {0}:{1}:{2}\n", outputHours, outputMinutes, outputSeconds));
+                        album.Duration = (String.Format("{0}:{1}:{2}", outputHours, outputMinutes, outputSeconds));
+
+                    }
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
+
+            }
+            if (count == 0)
+            {
+                sb.Append("There is no album with this name");
+            }
+            Console.WriteLine(sb.ToString());
         }
+
+        public void createAlbum(string name)
+        {
+
+            int count = 0;
+            foreach (Album album in albums)
+            {
+                if (album.Name.Equals(name))
+                {
+                    count++;
+                    Console.WriteLine("Album already exists!");
+                    break;
+                }
+            }
+
+            if (count == 0)
+            {
+
+                List<Song> songs = new List<Song>();
+                List<string> genres = new List<string>();
+                List<Album> albums1 = new List<Album>();
+                Artist artist = new Artist("", "", "", DateTime.MinValue, genres, albums1);
+
+                Album album = new Album(name, "", songs, artist, "", DateTime.MinValue);
+
+                albums.Add(album);
+                Console.WriteLine("Album added successfully!");
+            }
+        }
+
+        public void deleteAlbum(string name)
+        {
+            int count = 0;
+            foreach (Album album in albums)
+            {
+                if (album.Name.Equals(name))
+                {
+                    count++;
+                    albums.Remove(album);
+                    Console.WriteLine("Album deleted!");
+
+                    break;
+                }
+            }
+            if (count == 0)
+            {
+                Console.WriteLine("Album with this name does not exist!");
+            }
+        }
+
+        public void removeSongsFormAlbum(List<Song>songsToRemove, string albumName)
+        {
+
+            int count = 0;
+            foreach (Album album in albums)
+            {
+                if (album.Name.Equals(albumName))
+                {
+                    count++;
+
+                    if (album.Songs.Count == 0)
+                    {
+                        Console.WriteLine("The album is empty!");
+                    }
+                    else
+                    {
+                        foreach (Song song in songsToRemove)
+                        {
+                            if (album.Songs.Contains(song))
+                            {
+                                album.Songs.Remove(song);
+                                Console.WriteLine("Song is removed from album!");
+                            }
+                            else
+                            {
+                                Console.WriteLine("No such a song exists!");
+                            }
+                        }
+                    }
+                }               
+
+            }
+            if (count == 0)
+            {
+                Console.WriteLine("A album with this name was not found!");
+            }
+        }
+
+        public void addSongsToAlbum(List<Song> songsToAdd, string albumName)
+        {
+            int count = 0;
+            foreach (Album album in albums)
+            {
+                if (album.Name.Equals(albumName))
+                {
+                    count++;
+
+                    if (album.Songs.Count == 0)
+                    {
+                        foreach (Song song in songsToAdd)
+                        {
+                            album.Songs.Add(song);
+                            Console.WriteLine("Song {0} added in album!", song.Name);
+                        }
+
+                    }
+                    else
+                    {
+                        foreach (Song song in songsToAdd)
+                        {
+                            if (album.Songs.Contains(song))
+                            {
+                                Console.WriteLine("Song is already in this album!");
+                            }
+                            else
+                            {
+                                album.Songs.Add(song);
+                                Console.WriteLine("Song added in album!");
+                            }
+                        }
+
+                    }
+
+
+                }
+                if (count == 0)
+                {
+                    Console.WriteLine("A album with this name was not found!");
+                }
+
+            }
+
+        }
+
     }
 }

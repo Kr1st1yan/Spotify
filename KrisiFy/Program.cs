@@ -11,6 +11,8 @@ namespace KrisiFy
 {
     class Program
     {
+
+        //Currently here are only test parameters
         static void Main(string[] args)
         {
 
@@ -38,12 +40,12 @@ namespace KrisiFy
             Song song = new Song("jiv", "1:30:00",album,artist,"chalga",DateTime.Now);
             Song song1 = new Song("ne", "8:04:20",album,artist,"chalga",DateTime.Now);
             Song song2 = new Song("asfagad", "4:30",album,artist,"chalga",DateTime.Now);
-            
+
             /*songs.Add(song);
             songs.Add(song1);
             songs.Add(song2);
 */
-
+            List<Song> songsToRemove = new List<Song>();
 
             Listener listener = new Listener("bobi", "afadfaf", "bobi chepinci", DateTime.Now, genres, songs, playlists);
             listener.FavouriteSongs.Add(song);
@@ -52,15 +54,40 @@ namespace KrisiFy
             listener.PlaylistCollection.Add(playlist2);
 
             /*listener.infoPrint();
-            listener.favouriteSongsPrint();
-            listener.playlistsPrint();*/
+            listener.favouriteSongsPrint();*/
+           /* listener.playlistsPrint();*/
             playlist.Songs.Add(song);
             playlist.Songs.Add(song1);
-            
-            /*listener.songsAndLengthPrint("edin");*/
-            /*listener.createPlaylist("gadgdasg");
-            listener.removeSongFromFavourites(song2.Name);*/
-            listener.removeSongFromPlaylist(song2, "edin");
+            /*listener.playlistsPrint();*/
+
+
+            /*playlist.Songs.Add(song);
+            playlist.Songs.Add(song1);*/
+
+            songsToRemove.Add(song1);
+            songsToRemove.Add(song2);
+            songsToRemove.Add(song);
+
+            /*listener.songsAndLengthPrint("vtori");*/
+            /*listener.createPlaylist("vtori");*/
+            /*listener.removeSongFromFavourites(songsToRemove);*/
+            /*listener.addSongsToFavourites(songsToRemove);*/
+            /*listener.removeSongsFromPlaylist(songsToRemove, "vtori");*/
+
+
+            //Playlist time is not stored
+            //Playlist time calculation should be refacdtored
+
+            artist.Albums.Add(album);
+
+            /*artist.infoPrint();*/
+            artist.songsAndLengthPrint("albumnomer1");
+            artist.playlistsPrint();
+            artist.addSongsToAlbum(songsToRemove, "albumnomer1");
+            /*artist.deleteAlbum("albumnomer2");
+            artist.createAlbum("albumnomer1");
+            artist.createAlbum("albumnomer2");*/
+
 
 
         }
