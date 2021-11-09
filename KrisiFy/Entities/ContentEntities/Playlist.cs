@@ -10,10 +10,7 @@ namespace KrisiFy.Entities.ContentEntities
     class Playlist : Content
     {
         private List<Song> songs = new List<Song>();
-
-
         public Playlist(string name) : base(name)
-
         {
 
         }
@@ -22,7 +19,6 @@ namespace KrisiFy.Entities.ContentEntities
         {
             this.songs = songs;
         }
-
-        internal List<Song> Songs { get => songs; set => songs = value; }
+        public List<Song> Songs { get => songs; set => songs = value; }
     }
 }

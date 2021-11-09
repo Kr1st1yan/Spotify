@@ -4,6 +4,7 @@
 <user><Metallica>(TheBest){artist}</user>
 <user><Stenli>(123456){artist}</user>
 
+
 //<listener><ListenerName><FullName>[dateOfBirth](genres: [])(likedSongs: [])(playlists: [])</listener>
 
 <listener><Go6koy><Georgi D>[17/12/1996](genres: ['rock', 'metal'])(likedSongs: ['Nothing Else Matters', 'Obseben'])(playlists: [])</listener>
@@ -16,6 +17,7 @@
 //<album><AlbumName>[year](genres: [])(songs: [])</album>
 
 <album><Black Album>[1991](genres: [metal])(songs: ['Enter Sandman', 'Sad but True', 'Nothing Else Matters'])</album>
+
 <album><Obseben>[2002](genres: [rock])(songs: ['Yarost', 'Obseben'])</album>
 
 //<song><SongName>[lenght]</song>
@@ -26,4 +28,5 @@
 <song><Yarost>[4:17]</song>
 <song><Obseben>[4:08]</song>
 
-//<playlists><playlistName>(songs: [])</playlists>
+<playlists><Black Playlist>(songs: ['Yarost', 'Obseben'])</playlists>
+<playlists><Black Playlist>(songs: ['Yarost', 'Obseben'])</playlists>

@@ -12,18 +12,11 @@ namespace KrisiFy.ReadAndWriteFiles
         private List<string> data = new List<string>();
 
         public List<string> Data { get => data; set => data = value; }
-
-        /* public async Task write()
-         {
-             await File.WriteAllLinesAsync("E:\\Spotify\\KrisiFy\\ReadAndWriteFiles\\WriteFile.txt", data);
-         }*/
-
-        public async Task ExampleAsync(string input)
+        public async Task write(string input)
         {
-            using StreamWriter file = new StreamWriter("E:\\Spotify\\Spotify\\KrisiFy\\ReadAndWriteFiles\\WriteFile.txt", append: true);
+            File.WriteAllText("E:\\Spotify\\Spotify\\KrisiFy\\ReadAndWrite\\ReadAndWriteFiles\\KrisiFy.txt", String.Empty);
+            using StreamWriter file = new StreamWriter("E:\\Spotify\\Spotify\\KrisiFy\\ReadAndWrite\\ReadAndWriteFiles\\KrisiFy.txt", append: true);
             await file.WriteLineAsync(input);
         }
-
-
     }
 }

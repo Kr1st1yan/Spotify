@@ -17,7 +17,6 @@ namespace KrisiFy.Entities.UserEntities
         }
 
         public List<Album> Albums { get => albums; set => albums = value; }
-
         public override void infoPrint()
         {
             StringBuilder sb = new StringBuilder();
@@ -35,8 +34,6 @@ namespace KrisiFy.Entities.UserEntities
                     sb.Append(String.Format("    {0}\n", genre));
                 }
             }
-
-
 
             sb.Append(String.Format("Albums: \n"));
 
@@ -56,7 +53,6 @@ namespace KrisiFy.Entities.UserEntities
             }
             Console.WriteLine(sb.ToString());
         }
-
         public override void playlistsPrint()
         {
             StringBuilder sb = new StringBuilder();
@@ -71,7 +67,6 @@ namespace KrisiFy.Entities.UserEntities
 
                 foreach (Album album in albums)
                 {
-
                     sb.Append(String.Format("{0}. Album - {1}\n", albumsCounter, album.Name));
 
                     if (album.Songs.Count == 0)
@@ -87,17 +82,12 @@ namespace KrisiFy.Entities.UserEntities
                             sb.Append(String.Format("    {0}. {1}\n", songCounter, song.Name));
                             songCounter++;
                         }
-
                     }
                     albumsCounter++;
-
                 }
             }
             Console.WriteLine(sb.ToString());
-
-
         }
-
         public override void songsAndLengthPrint(string albumName)
         {
             int count = 0;
@@ -108,8 +98,8 @@ namespace KrisiFy.Entities.UserEntities
                 if (album.Name.Equals(albumName))
                 {
                     count++;
-
-                    sb.Append(String.Format("Album name is {0}\nArtist: {1}\nGenre: {2}\nIt was out on {3}\n", album.Name,album.Artist.FullName,album.Genre,album.OutYear.ToString("dd/MM/yyyy")));
+                    string a = string.Format("Album name is {0}\nArtist: {1}\nIt was out on {2}\n", album.Name, album.Artist.Username, album.OutYear);
+                    sb.Append(a);
 
                     if (album.Songs.Count == 0)
                     {
@@ -118,18 +108,21 @@ namespace KrisiFy.Entities.UserEntities
                     else
                     {
                         int songCounter = 1;
-
                         int allHours = 0;
                         int allMinutes = 0;
                         int allSeconds = 0;
+
+                        sb.Append(String.Format("The genres in the album are:\n"));
+                        foreach (string genre in album.Genres)
+                        {
+                            sb.Append(String.Format("{0}:\n", genre));
+                        }
                         sb.Append(String.Format("The songs in the album are:\n"));
                         foreach (Song song in album.Songs)
                         {
-
                             sb.Append(String.Format("    {0}. {1}\n", songCounter, song.Name));
 
                             string[] data = song.Duration.Split(":");
-
 
                             if (data.Length == 3)
                             {
@@ -151,7 +144,6 @@ namespace KrisiFy.Entities.UserEntities
                                     allMinutes -= 60;
                                 }
                                 allHours += hours;
-
                             }
                             else
                             {
@@ -172,7 +164,6 @@ namespace KrisiFy.Entities.UserEntities
                                     allMinutes -= 60;
                                 }
                             }
-
                         }
                         string outputHours = allHours.ToString();
                         string outputMinutes = allMinutes.ToString();
@@ -192,7 +183,6 @@ namespace KrisiFy.Entities.UserEntities
 
                         sb.Append(String.Format("Album length is: {0}:{1}:{2}\n", outputHours, outputMinutes, outputSeconds));
                         album.Duration = (String.Format("{0}:{1}:{2}", outputHours, outputMinutes, outputSeconds));
-
                     }
                     break;
                 }
@@ -208,10 +198,8 @@ namespace KrisiFy.Entities.UserEntities
             }
             Console.WriteLine(sb.ToString());
         }
-
-        public void createAlbum(string name)
+        public Album createAlbum(string name)
         {
-
             int count = 0;
             foreach (Album album in albums)
             {
@@ -225,19 +213,16 @@ namespace KrisiFy.Entities.UserEntities
 
             if (count == 0)
             {
-
                 List<Song> songs = new List<Song>();
                 List<string> genres = new List<string>();
                 List<Album> albums1 = new List<Album>();
                 Artist artist = new Artist("", "", "", DateTime.MinValue, genres, albums1);
+                Album album = new Album(name, "", songs, artist, genres, "");
 
-                Album album = new Album(name, "", songs, artist, "", DateTime.MinValue);
-
-                albums.Add(album);
-                Console.WriteLine("Album added successfully!");
+                return album;
             }
+            return null;
         }
-
         public void deleteAlbum(string name)
         {
             int count = 0;
@@ -257,28 +242,27 @@ namespace KrisiFy.Entities.UserEntities
                 Console.WriteLine("Album with this name does not exist!");
             }
         }
-
-        public void removeSongsFormAlbum(List<Song>songsToRemove, string albumName)
+        public void removeSongsFormAlbum(Song songToRemove, string albumName)
         {
-
-            int count = 0;
-            foreach (Album album in albums)
+            if (albums.Count == 0)
             {
-                if (album.Name.Equals(albumName))
+                Console.WriteLine("Collection is empty, there are no albums to remove song from!");
+            }
+            else
+            {
+                foreach (Album album in albums)
                 {
-                    count++;
-
-                    if (album.Songs.Count == 0)
+                    if (album.Name.Equals(albumName))
                     {
-                        Console.WriteLine("The album is empty!");
-                    }
-                    else
-                    {
-                        foreach (Song song in songsToRemove)
+                        if (album.Songs.Count == 0)
                         {
-                            if (album.Songs.Contains(song))
+                            Console.WriteLine("The album is empty!");
+                        }
+                        else
+                        {
+                            if (album.Songs.Contains(songToRemove))
                             {
-                                album.Songs.Remove(song);
+                                album.Songs.Remove(songToRemove);
                                 Console.WriteLine("Song is removed from album!");
                             }
                             else
@@ -287,60 +271,41 @@ namespace KrisiFy.Entities.UserEntities
                             }
                         }
                     }
-                }               
-
-            }
-            if (count == 0)
-            {
-                Console.WriteLine("A album with this name was not found!");
+                }
             }
         }
-
-        public void addSongsToAlbum(List<Song> songsToAdd, string albumName)
+        public void addSongsToAlbum(Song songToAdd, string albumName)
         {
-            int count = 0;
-            foreach (Album album in albums)
+            if (albums.Count == 0)
             {
-                if (album.Name.Equals(albumName))
+                Console.WriteLine("Collection is empty, there are no albums to add this song to!");
+            }
+            else
+            {
+                foreach (Album album in albums)
                 {
-                    count++;
-
-                    if (album.Songs.Count == 0)
+                    if (album.Name.Equals(albumName))
                     {
-                        foreach (Song song in songsToAdd)
+                        if (album.Songs.Count == 0)
                         {
-                            album.Songs.Add(song);
-                            Console.WriteLine("Song {0} added in album!", song.Name);
+                            album.Songs.Add(songToAdd);
+                            Console.WriteLine("Song {0} added in album!", songToAdd.Name);
                         }
-
-                    }
-                    else
-                    {
-                        foreach (Song song in songsToAdd)
+                        else
                         {
-                            if (album.Songs.Contains(song))
+                            if (album.Songs.Contains(songToAdd))
                             {
                                 Console.WriteLine("Song is already in this album!");
                             }
                             else
                             {
-                                album.Songs.Add(song);
+                                album.Songs.Add(songToAdd);
                                 Console.WriteLine("Song added in album!");
                             }
                         }
-
                     }
-
-
                 }
-                if (count == 0)
-                {
-                    Console.WriteLine("A album with this name was not found!");
-                }
-
             }
-
         }
-
     }
 }

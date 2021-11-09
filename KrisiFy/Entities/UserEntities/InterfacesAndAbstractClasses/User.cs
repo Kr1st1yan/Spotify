@@ -9,13 +9,11 @@ namespace KrisiFy.Entities.UserEntities.InterfacesAndAbstractClasses
 {
     abstract class User : IUserInterface
     {
-
         private string username;
         private string password;
         private string fullName;
         private DateTime birthDate;
         private List<string> genres;
-
         protected User(string username, string password, string fullName, DateTime birthDate, List<string> genres)
         {
             this.username = username;
@@ -32,10 +30,8 @@ namespace KrisiFy.Entities.UserEntities.InterfacesAndAbstractClasses
         public DateTime BirthDate { get => birthDate; set => birthDate = value; }
         public List<string> Genres { get => genres; set => genres = value; }
 
-        virtual public void infoPrint(){}
-
-        virtual public void playlistsPrint(){}
-
-        virtual public void songsAndLengthPrint(string playlistName){}
+        virtual public void infoPrint() { }
+        virtual public void playlistsPrint() { }
+        virtual public void songsAndLengthPrint(string playlistName) { }
     }
 }

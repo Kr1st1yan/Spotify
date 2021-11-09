@@ -10,17 +10,22 @@ namespace KrisiFy.Entities.ContentEntities
     class Album : Playlist
     {
         private Artist artist;
-        private string genre;
-        private DateTime outYear;
-        public Album(string name, string duration, List<Song> songs, Artist artist, string genre, DateTime outYear) : base(name, duration, songs)
+        private List<string> genres;
+        private string outYear;
+        public Album(string name, string duration, List<Song> songs, Artist artist, List<string> genres, string outYear) : base(name, duration, songs)
         {
             this.Artist = artist;
-            this.Genre = genre;
+            this.Genres = genres;
             this.OutYear = outYear;
         }
 
-        public string Genre { get => genre; set => genre = value; }
-        public DateTime OutYear { get => outYear; set => outYear = value; }
+        public Album(string name) : base(name)
+        {
+
+        }
+
         public Artist Artist { get => artist; set => artist = value; }
+        public List<string> Genres { get => genres; set => genres = value; }
+        public string OutYear { get => outYear; set => outYear = value; }
     }
 }
