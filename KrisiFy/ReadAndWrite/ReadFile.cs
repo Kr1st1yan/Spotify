@@ -29,7 +29,7 @@ namespace KrisiFy.ReadAndWrite
 
             WriteOnFile writer = new WriteOnFile();
 
-            foreach (string line in System.IO.File.ReadLines("E:\\Spotify\\Spotify\\KrisiFy\\ReadAndWrite\\ReadAndWriteFiles\\KrisiFy.txt"))
+            foreach (string line in System.IO.File.ReadLines(Constants.PATH_TO_TEXT_FILE))
             {
                 if (line != null)
                 {
@@ -39,25 +39,23 @@ namespace KrisiFy.ReadAndWrite
                         string password = userRegex.Match(line).Groups["password"].Value;
                         string type = userRegex.Match(line).Groups["type"].Value;
 
-
-                        if (type.Equals("listener"))
+                        if (type.Equals(Constants.LISTENER))
                         {
-
                             List<string> genres = new List<string>();
-                            List<Song> favouriteSongs = new List<Song>();
+                            Playlist favouriteSongs = new Playlist("");
                             List<Playlist> playlists = new List<Playlist>();
-                            Listener listener = new Listener(username, password, "", DateTime.MinValue, genres, favouriteSongs, playlists);
+                            Listener listener = new Listener(username, password, "", DateTime.MinValue, genres, favouriteSongs, playlists, Constants.LISTENER);
                             Storage.Listeners.Add(username, listener);
-
+                            Storage.Users.Add(username, listener);
                         }
-                        else if (type.Equals("artist"))
+                        else if (type.Equals(Constants.ARTIST))
                         {
                             List<string> genres = new List<string>();
                             List<Album> albums = new List<Album>();
-                            Artist artist = new Artist(username, password, "", DateTime.MinValue, genres, albums);
+                            Artist artist = new Artist(username, password, "", DateTime.MinValue, genres, albums, Constants.ARTIST);
                             Storage.Artists.Add(username, artist);
+                            Storage.Users.Add(username, artist);
                         }
-
                     }
                     else if (listenerRegex.IsMatch(line))
                     {
@@ -72,10 +70,8 @@ namespace KrisiFy.ReadAndWrite
                         List<string> likedSongsInput = likedSongs.Split(", ").ToList<string>();
                         List<string> playlistsInput = playlists.Split(", ").ToList<string>();
 
-
                         Storage.Listeners[username].FullName = fullName;
                         Storage.Listeners[username].BirthDate = DateTime.Parse(dateOfBirth);
-
 
                         foreach (string name in genresInput)
                         {
@@ -85,35 +81,31 @@ namespace KrisiFy.ReadAndWrite
                             }
                         }
 
-
                         foreach (string name in likedSongsInput)
                         {
                             if (name != "")
                             {
                                 Song song = new Song(name);
-                                if (!storage.Songs.ContainsKey(name))
+                                if (!Storage.Songs.ContainsKey(name))
                                 {
                                     Storage.Songs.Add(name, song);
                                 }
-
-                                Storage.Listeners[username].FavouriteSongs.Add(song);
+                                Storage.Listeners[username].FavouriteSongs.Songs.Add(song);
                             }
                         }
-
 
                         foreach (string name in playlistsInput)
                         {
                             if (name != "")
                             {
                                 Playlist playlist = new Playlist(name);
-                                if (!storage.Playlists.ContainsKey(name))
+                                if (!Storage.Playlists.ContainsKey(name))
                                 {
                                     Storage.Playlists.Add(name, playlist);
                                 }
                                 Storage.Listeners[username].PlaylistCollection.Add(playlist);
                             }
                         }
-
                     }
                     else if (artistRegex.IsMatch(line))
                     {
@@ -142,7 +134,7 @@ namespace KrisiFy.ReadAndWrite
                             if (name != "")
                             {
                                 Album album = new Album(name);
-                                if (!storage.Albums.ContainsKey(name))
+                                if (!Storage.Albums.ContainsKey(name))
                                 {
                                     Storage.Albums.Add(name, album);
                                 }
@@ -183,7 +175,6 @@ namespace KrisiFy.ReadAndWrite
                                 {
                                     Storage.Albums[albumName].Genres.Add(name);
                                 }
-
                             }
                         }
 
@@ -204,7 +195,6 @@ namespace KrisiFy.ReadAndWrite
                                 Storage.Songs[name].Artist = Storage.Albums[albumName].Artist;
                                 Storage.Songs[name].Album = Storage.Albums[albumName];
                                 Storage.Songs[name].OutYear = Storage.Albums[albumName].OutYear;
-
                             }
                         }
                     }

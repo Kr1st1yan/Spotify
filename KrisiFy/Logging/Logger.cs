@@ -1,5 +1,6 @@
 ﻿using KrisiFy.Entities.ContentEntities;
 using KrisiFy.Entities.UserEntities;
+using KrisiFy.Entities.UserEntities.InterfacesAndAbstractClasses;
 using KrisiFy.ReadAndWrite;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,7 @@ namespace KrisiFy.Logging
             {
                 Console.WriteLine("Please select your role: [1] Artist     [2] Listener");
                 string role = Console.ReadLine();
+
                 if (role.Equals("1"))
                 {
                     if (readFile.Storage.Artists.ContainsKey(username))
@@ -43,8 +45,9 @@ namespace KrisiFy.Logging
                     {
                         List<string> genres = new List<string>();
                         List<Album> albums = new List<Album>();
-                        Artist artist = new Artist(username, password, fullName, DateTime.Parse(birthDate), genres, albums);
+                        Artist artist = new Artist(username, password, fullName, DateTime.Parse(birthDate), genres, albums, "artist");
                         readFile.Storage.Artists.Add(username, artist);
+                        readFile.Storage.Users.Add(username, artist);
                     }
                 }
                 else if (role.Equals("2"))
@@ -56,11 +59,11 @@ namespace KrisiFy.Logging
                     else
                     {
                         List<string> genres = new List<string>();
-                        List<Song> songs = new List<Song>();
+                        Playlist songs = new Playlist("");
                         List<Playlist> playlists = new List<Playlist>();
-                        Listener listener = new Listener(username, password, fullName, DateTime.Parse(birthDate), genres, songs, playlists);
+                        Listener listener = new Listener(username, password, fullName, DateTime.Parse(birthDate), genres, songs, playlists, "listener");
                         readFile.Storage.Listeners.Add(username, listener);
-                        Console.WriteLine();
+                        readFile.Storage.Users.Add(username, listener);
                     }
                 }
                 else
@@ -69,45 +72,21 @@ namespace KrisiFy.Logging
                 }
             }
         }
-
-        public Listener listenerLogin(ReadFile readFile, string username, string password, string role)
+        public bool login(ReadFile readFile, string username, string password)
         {
-            if (readFile.Storage.Listeners.ContainsKey(username))
+            if (readFile.Storage.Users.ContainsKey(username))
             {
-                if (password.Equals(readFile.Storage.Listeners[username].Password))
+                if (password.Equals(readFile.Storage.Users[username].Password))
                 {
-                    return readFile.Storage.Listeners[username];
-                }
-                else
-                {
-                    Console.WriteLine("Wrong password!");
+                    return true;
                 }
             }
-            else
-            {
-                Console.WriteLine("No user found!");
-            }
-            return null;
+            return false;
         }
 
-        public Artist artistLogin(ReadFile readFile, string username, string password, string role)
+        public string getUserType(ReadFile readFile, string username)
         {
-            if (readFile.Storage.Artists.ContainsKey(username))
-            {
-                if (password.Equals(readFile.Storage.Artists[username].Password))
-                {
-                    return readFile.Storage.Artists[username];
-                }
-                else
-                {
-                    Console.WriteLine("Wrong password!");
-                }
-            }
-            else
-            {
-                Console.WriteLine("No user found!");
-            }
-            return null;
+            return readFile.Storage.Users[username].Type;
         }
     }
 }

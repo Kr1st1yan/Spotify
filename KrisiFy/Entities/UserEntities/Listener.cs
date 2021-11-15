@@ -1,5 +1,6 @@
 ﻿using KrisiFy.Entities.ContentEntities;
 using KrisiFy.Entities.UserEntities.InterfacesAndAbstractClasses;
+using KrisiFy.ReadAndWrite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +11,12 @@ namespace KrisiFy.Entities.UserEntities
 {
     class Listener : User
     {
-        List<Song> favouriteSongs;
+        Playlist favouriteSongs;
         List<Playlist> playlistCollection;
-
-        public List<Song> FavouriteSongs { get => favouriteSongs; set => favouriteSongs = value; }
         public List<Playlist> PlaylistCollection { get => playlistCollection; set => playlistCollection = value; }
-        public Listener(string username, string password, string fullName, DateTime birthDate, List<string> genres, List<Song> favouriteSongs, List<Playlist> playlistCollection) : base(username, password, fullName, birthDate, genres)
+        public Playlist FavouriteSongs { get => favouriteSongs; set => favouriteSongs = value; }
+
+        public Listener(string username, string password, string fullName, DateTime birthDate, List<string> genres, Playlist favouriteSongs, List<Playlist> playlistCollection, string type) : base(username, password, fullName, birthDate, genres, type)
         {
             this.FavouriteSongs = favouriteSongs;
             this.PlaylistCollection = playlistCollection;
@@ -41,14 +42,14 @@ namespace KrisiFy.Entities.UserEntities
 
             sb.Append(String.Format("Favourite songs: \n"));
 
-            if (FavouriteSongs.Count == 0)
+            if (FavouriteSongs.Songs.Count == 0)
             {
                 sb.Append("There are no songs in favourites.\n");
             }
             else
             {
                 int songCounter = 1;
-                foreach (Song song in FavouriteSongs)
+                foreach (Song song in FavouriteSongs.Songs)
                 {
                     sb.Append(String.Format("{0}. {1}\n", songCounter, song.Name));
                     songCounter++;
@@ -99,14 +100,14 @@ namespace KrisiFy.Entities.UserEntities
         {
             StringBuilder sb = new StringBuilder();
 
-            if (FavouriteSongs.Count == 0)
+            if (FavouriteSongs.Songs.Count == 0)
             {
                 sb.Append("There are no songs in favourites.\n");
             }
             else
             {
                 int songCounter = 1;
-                foreach (Song song in FavouriteSongs)
+                foreach (Song song in FavouriteSongs.Songs)
                 {
                     sb.Append(String.Format("{0}. {1}:\n", songCounter, song.Name));
                     sb.Append(String.Format("    Duration: {0}\n", song.Duration));
@@ -132,99 +133,9 @@ namespace KrisiFy.Entities.UserEntities
             }
             else
             {
-                foreach (Playlist playlist in PlaylistCollection)
-                {
-                    if (playlist.Name.Equals(playListName))
-                    {
-                        count++;
-
-                        sb.Append(String.Format("Playlist name is {0}\n", playlist.Name));
-
-                        if (playlist.Songs.Count == 0)
-                        {
-                            sb.Append("There are no songs in this playlist!\n");
-                        }
-                        else
-                        {
-                            int songCounter = 1;
-                            int allHours = 0;
-                            int allMinutes = 0;
-                            int allSeconds = 0;
-
-                            sb.Append(String.Format("The songs in the playlist are:\n"));
-                            foreach (Song song in playlist.Songs)
-                            {
-                                sb.Append(String.Format("    {0}. {1}\n", songCounter, song.Name));
-
-                                string[] data = song.Duration.Split(":");
-
-                                if (data.Length == 3)
-                                {
-                                    int hours = int.Parse(data[0]);
-                                    int minutes = int.Parse(data[1]);
-                                    int seconds = int.Parse(data[2]);
-
-                                    allSeconds += seconds;
-                                    if (allSeconds > 59)
-                                    {
-                                        allMinutes++;
-                                        allSeconds -= 60;
-                                    }
-
-                                    allMinutes += minutes;
-                                    if (allMinutes > 59)
-                                    {
-                                        allHours++;
-                                        allMinutes -= 60;
-                                    }
-                                    allHours += hours;
-                                }
-                                else
-                                {
-                                    int minutes = int.Parse(data[0]);
-                                    int seconds = int.Parse(data[1]);
-
-                                    allSeconds += seconds;
-                                    if (allSeconds > 59)
-                                    {
-                                        allMinutes++;
-                                        allSeconds -= 60;
-                                    }
-
-                                    allMinutes += minutes;
-                                    if (allMinutes > 59)
-                                    {
-                                        allHours++;
-                                        allMinutes -= 60;
-                                    }
-                                }
-                            }
-                            string outputHours = allHours.ToString();
-                            string outputMinutes = allMinutes.ToString();
-                            string outputSeconds = allSeconds.ToString();
-                            if (allHours < 10)
-                            {
-                                outputHours = "0" + allHours.ToString();
-                            }
-                            if (allMinutes < 10)
-                            {
-                                outputMinutes = "0" + allMinutes.ToString();
-                            }
-                            if (allSeconds < 10)
-                            {
-                                outputSeconds = "0" + allSeconds.ToString();
-                            }
-                            sb.Append(String.Format("Playlist length is: {0}:{1}:{2}\n", allHours, allMinutes, allSeconds));
-                            playlist.Duration = String.Format("{0}:{1}:{2}\n", allHours, allMinutes, allSeconds);
-                        }
-                    }
-                    if (count == 0)
-                    {
-                        sb.Append("There is no playlist with this name");
-                    }
-                }
+                Playlist playlist = new Playlist(playListName);
+                Console.WriteLine(playlist.getPlaylistInfo(PlaylistCollection, playListName));
             }
-            Console.WriteLine(sb.ToString());
         }
 
         public Playlist createPlaylist(string name)
@@ -272,36 +183,36 @@ namespace KrisiFy.Entities.UserEntities
 
         public void addSongsToFavourites(Song songToAdd)
         {
-            if (FavouriteSongs.Count == 0)
+            if (FavouriteSongs.Songs.Count == 0)
             {
-                FavouriteSongs.Add(songToAdd);
+                FavouriteSongs.Songs.Add(songToAdd);
                 Console.WriteLine("Song {0} added in favourites!", songToAdd.Name);
             }
             else
             {
-                if (FavouriteSongs.Contains(songToAdd))
+                if (FavouriteSongs.Songs.Contains(songToAdd))
                 {
                     Console.WriteLine("Song is already in this playlist!");
                 }
                 else
                 {
-                    FavouriteSongs.Add(songToAdd);
-                    Console.WriteLine("Song added in favourites!");
+                    FavouriteSongs.Songs.Add(songToAdd);
+                    Console.WriteLine("Song {0} added in favourites!", songToAdd);
                 }
             }
         }
 
         public void removeSongFromFavourites(Song songToRemove)
         {
-            if (FavouriteSongs.Count == 0)
+            if (FavouriteSongs.Songs.Count == 0)
             {
                 Console.WriteLine("Favourite songs is empty!");
             }
             else
             {
-                if (FavouriteSongs.Contains(songToRemove))
+                if (FavouriteSongs.Songs.Contains(songToRemove))
                 {
-                    FavouriteSongs.Remove(songToRemove);
+                    FavouriteSongs.Songs.Remove(songToRemove);
                     Console.WriteLine("Song is removed from favourites!");
                 }
                 else
@@ -321,26 +232,7 @@ namespace KrisiFy.Entities.UserEntities
             {
                 foreach (Playlist playlist in PlaylistCollection)
                 {
-                    if (playlist.Name.Equals(playListName))
-                    {
-                        if (playlist.Songs.Count == 0)
-                        {
-                            playlist.Songs.Add(songToAdd);
-                            Console.WriteLine("Song {0} added in playlist!", songToAdd.Name);
-                        }
-                        else
-                        {
-                            if (playlist.Songs.Contains(songToAdd))
-                            {
-                                Console.WriteLine("Song is already in this playlist!");
-                            }
-                            else
-                            {
-                                playlist.Songs.Add(songToAdd);
-                                Console.WriteLine("Song added in playlist!");
-                            }
-                        }
-                    }
+                    playlist.addSong(playListName, songToAdd);
                 }
             }
         }
@@ -355,25 +247,7 @@ namespace KrisiFy.Entities.UserEntities
             {
                 foreach (Playlist playlist in PlaylistCollection)
                 {
-                    if (playlist.Name.Equals(playListName))
-                    {
-                        if (playlist.Songs.Count == 0)
-                        {
-                            Console.WriteLine("The playlist is empty!");
-                        }
-                        else
-                        {
-                            if (playlist.Songs.Contains(songToRemove))
-                            {
-                                playlist.Songs.Remove(songToRemove);
-                                Console.WriteLine("Song is removed from playlist!");
-                            }
-                            else
-                            {
-                                Console.WriteLine("No such a song exists!");
-                            }
-                        }
-                    }
+                    playlist.removeSong(playListName, songToRemove);
                 }
             }
         }

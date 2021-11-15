@@ -1,5 +1,6 @@
 ﻿using KrisiFy.Entities.ContentEntities;
 using KrisiFy.Entities.UserEntities;
+using KrisiFy.Entities.UserEntities.InterfacesAndAbstractClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace KrisiFy.DataStore
 {
     class Storage
     {
+        Dictionary<string, User> users = new Dictionary<string, User>();
         Dictionary<string, Listener> listeners = new Dictionary<string, Listener>();
         Dictionary<string, Artist> artists = new Dictionary<string, Artist>();
         Dictionary<string, Album> albums = new Dictionary<string, Album>();
@@ -25,15 +27,29 @@ namespace KrisiFy.DataStore
         public Dictionary<string, Album> Albums { get => albums; set => albums = value; }
         public Dictionary<string, Song> Songs { get => songs; set => songs = value; }
         public Dictionary<string, Playlist> Playlists { get => playlists; set => playlists = value; }
-
+        public Dictionary<string, User> Users { get => users; set => users = value; }
 
         public string returnAllStorageInfo()
         {
             StringBuilder sb = new StringBuilder();
 
-            foreach (Listener lis in listeners.Values)
+            sb.Append(returnUserInfo());
+            sb.Append(returnListenerInfo());
+            sb.Append(returnArtistInfo());
+            sb.Append(returnAlbumInfo());
+            sb.Append(returnSongInfo());
+            sb.Append(returnPlaylistInfo());
+
+            return sb.ToString();
+        }
+
+        public string returnUserInfo()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (Listener listener in listeners.Values)
             {
-                sb.Append(String.Format("<user><{0}>({1}){{listener}}</user>\n", lis.Username, lis.Password));
+                sb.Append(String.Format("<user><{0}>({1}){{listener}}</user>\n", listener.Username, listener.Password));
             }
 
             foreach (Artist artist in artists.Values)
@@ -41,193 +57,218 @@ namespace KrisiFy.DataStore
                 sb.Append(String.Format("<user><{0}>({1}){{artist}}</user>\n", artist.Username, artist.Password));
             }
 
-            foreach (Listener lis in listeners.Values)
-            {
-                sb.Append(String.Format("<listener><{0}><{1}>[{2}](genres: [", lis.Username, lis.FullName, lis.BirthDate.ToString("dd/MM/yyyy")));
+            return sb.ToString();
+        }
 
-                if (lis.Genres.Count == 0)
+        public string returnListenerInfo()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (Listener listener in listeners.Values)
+            {
+                sb.Append(String.Format("<listener><{0}><{1}>[{2}](genres: [", listener.Username, listener.FullName, listener.BirthDate.ToString("dd/MM/yyyy")));
+
+                if (listener.Genres.Count == 0)
                 {
                     sb.Append("])(likedSongs: [");
                 }
                 else
                 {
-                    for (int i = 0; i < lis.Genres.Count; i++)
+                    for (int i = 0; i < listener.Genres.Count; i++)
                     {
-                        if (i == lis.Genres.Count - 1)
+                        if (i == listener.Genres.Count - 1)
                         {
-                            sb.Append(String.Format("\'{0}\'])(likedSongs: [", lis.Genres[i]));
+                            sb.Append(String.Format("\'{0}\'])(likedSongs: [", listener.Genres[i]));
                         }
                         else
                         {
-                            sb.Append(String.Format("\'{0}\', ", lis.Genres[i]));
+                            sb.Append(String.Format("\'{0}\', ", listener.Genres[i]));
                         }
                     }
                 }
 
-                if (lis.FavouriteSongs.Count == 0)
+                if (listener.FavouriteSongs.Songs.Count == 0)
                 {
                     sb.Append("])(playlists: [");
                 }
                 else
                 {
-                    for (int i = 0; i < lis.FavouriteSongs.Count; i++)
+                    for (int i = 0; i < listener.FavouriteSongs.Songs.Count; i++)
                     {
-                        if (i == lis.FavouriteSongs.Count - 1)
+                        if (i == listener.FavouriteSongs.Songs.Count - 1)
                         {
-                            sb.Append(String.Format("\'{0}\'])(playlists: [", lis.FavouriteSongs[i].Name));
+                            sb.Append(String.Format("\'{0}\'])(playlists: [", listener.FavouriteSongs.Songs[i].Name));
                         }
                         else
                         {
-                            sb.Append(String.Format("\'{0}\', ", lis.FavouriteSongs[i].Name));
+                            sb.Append(String.Format("\'{0}\', ", listener.FavouriteSongs.Songs[i].Name));
                         }
                     }
-
                 }
 
-                if (lis.PlaylistCollection.Count == 0)
+                if (listener.PlaylistCollection.Count == 0)
                 {
                     sb.Append("])</listener>\n");
                 }
                 else
                 {
-
-                    for (int i = 0; i < lis.PlaylistCollection.Count; i++)
+                    for (int i = 0; i < listener.PlaylistCollection.Count; i++)
                     {
-                        if (i == lis.PlaylistCollection.Count - 1)
+                        if (i == listener.PlaylistCollection.Count - 1)
                         {
-                            sb.Append(String.Format("\'{0}\'])</listener>\n", lis.PlaylistCollection[i].Name));
+                            sb.Append(String.Format("\'{0}\'])</listener>\n", listener.PlaylistCollection[i].Name));
                         }
                         else
                         {
-                            sb.Append(String.Format("\'{0}\', ", lis.PlaylistCollection[i].Name));
+                            sb.Append(String.Format("\'{0}\', ", listener.PlaylistCollection[i].Name));
                         }
                     }
                 }
-
-
-
             }
+            return sb.ToString();
+        }
 
-            foreach (Artist art in artists.Values)
+        public string returnArtistInfo()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (Artist artist in artists.Values)
             {
-                sb.Append(String.Format("<artist><{0}><{1}>[{2}](genres: [", art.Username, art.FullName, art.BirthDate.ToString("dd/MM/yyyy")));
+                sb.Append(String.Format("<artist><{0}><{1}>[{2}](genres: [", artist.Username, artist.FullName, artist.BirthDate.ToString("dd/MM/yyyy")));
 
-                if (art.Genres.Count == 0)
+                if (artist.Genres.Count == 0)
                 {
                     sb.Append("])(likedSongs: [");
                 }
                 else
                 {
-                    for (int i = 0; i < art.Genres.Count; i++)
+                    for (int i = 0; i < artist.Genres.Count; i++)
                     {
-                        if (i == art.Genres.Count - 1)
+                        if (i == artist.Genres.Count - 1)
                         {
-                            sb.Append(String.Format("\'{0}\'])(albums: [", art.Genres[i]));
+                            sb.Append(String.Format("\'{0}\'])(albums: [", artist.Genres[i]));
                         }
                         else
                         {
-                            sb.Append(String.Format("\'{0}\', ", art.Genres[i]));
+                            sb.Append(String.Format("\'{0}\', ", artist.Genres[i]));
                         }
                     }
                 }
 
-                if (art.Albums.Count == 0)
+                if (artist.Albums.Count == 0)
                 {
                     sb.Append("])</artist>\n");
                 }
                 else
                 {
-                    for (int i = 0; i < art.Albums.Count; i++)
+                    for (int i = 0; i < artist.Albums.Count; i++)
                     {
-                        if (i == art.Albums.Count - 1)
+                        if (i == artist.Albums.Count - 1)
                         {
-                            sb.Append(String.Format("\'{0}\'])</artist>\n", art.Albums[i].Name));
+                            sb.Append(String.Format("\'{0}\'])</artist>\n", artist.Albums[i].Name));
                         }
                         else
                         {
-                            sb.Append(String.Format("\'{0}\', ", art.Albums[i].Name));
+                            sb.Append(String.Format("\'{0}\', ", artist.Albums[i].Name));
                         }
                     }
                 }
             }
+            return sb.ToString();
+        }
 
-            foreach (Album alb in albums.Values)
+        public string returnAlbumInfo()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (Album album in albums.Values)
             {
-                sb.Append(String.Format("<album><{0}>[{1}](genres: [", alb.Name, alb.OutYear));
+                sb.Append(String.Format("<album><{0}>[{1}](genres: [", album.Name, album.OutYear));
 
-                if (alb.Genres.Count == 0)
+                if (album.Genres.Count == 0)
                 {
                     sb.Append("])(songs: [");
                 }
                 else
                 {
-                    for (int i = 0; i < alb.Genres.Count; i++)
+                    for (int i = 0; i < album.Genres.Count; i++)
                     {
-                        if (i == alb.Genres.Count - 1)
+                        if (i == album.Genres.Count - 1)
                         {
-                            sb.Append(String.Format("{0}])(songs: [", alb.Genres[i]));
+                            sb.Append(String.Format("{0}])(songs: [", album.Genres[i]));
                         }
                         else
                         {
-                            sb.Append(String.Format("{0}, ", alb.Genres[i]));
+                            sb.Append(String.Format("{0}, ", album.Genres[i]));
                         }
                     }
                 }
 
-                if (alb.Songs.Count == 0)
+                if (album.Songs.Count == 0)
                 {
                     sb.Append("])</album>\n");
                 }
                 else
                 {
-
-                    for (int i = 0; i < alb.Songs.Count; i++)
+                    for (int i = 0; i < album.Songs.Count; i++)
                     {
-                        if (i == alb.Songs.Count - 1)
+                        if (i == album.Songs.Count - 1)
                         {
-                            sb.Append(String.Format("\'{0}\'])</album>\n", alb.Songs[i].Name));
+                            sb.Append(String.Format("\'{0}\'])</album>\n", album.Songs[i].Name));
                         }
                         else
                         {
-                            sb.Append(String.Format("\'{0}\', ", alb.Songs[i].Name));
+                            sb.Append(String.Format("\'{0}\', ", album.Songs[i].Name));
                         }
                     }
                 }
             }
+            return sb.ToString();
+        }
 
-            foreach (Song sng in songs.Values)
+        public string returnSongInfo()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (Song song in songs.Values)
             {
-                sb.Append(String.Format("<song><{0}>", sng.Name));
+                sb.Append(String.Format("<song><{0}>", song.Name));
 
-                if (sng.Duration == "")
+                if (song.Duration == "")
                 {
                     sb.Append("[]</song>\n");
                 }
                 else
                 {
-                    sb.Append(String.Format("[{0}]</song>\n", sng.Duration));
+                    sb.Append(String.Format("[{0}]</song>\n", song.Duration));
                 }
             }
+            return sb.ToString();
+        }
 
-            foreach (Playlist pls in playlists.Values)
+        public string returnPlaylistInfo()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (Playlist playlist in playlists.Values)
             {
-                sb.Append(String.Format("<playlists><{0}>(songs: [", pls.Name));
+                sb.Append(String.Format("<playlists><{0}>(songs: [", playlist.Name));
 
-                if (pls.Songs.Count == 0)
+                if (playlist.Songs.Count == 0)
                 {
                     sb.Append("])</playlists>");
                 }
                 else
                 {
-                    for (int i = 0; i < pls.Songs.Count; i++)
+                    for (int i = 0; i < playlist.Songs.Count; i++)
                     {
-                        if (i == pls.Songs.Count - 1)
+                        if (i == playlist.Songs.Count - 1)
                         {
-                            sb.Append(String.Format("\'{0}\'])</playlists>", pls.Songs[i].Name));
+                            sb.Append(String.Format("\'{0}\'])</playlists>", playlist.Songs[i].Name));
                         }
                         else
                         {
-                            sb.Append(String.Format("\'{0}\', ", pls.Songs[i].Name));
+                            sb.Append(String.Format("\'{0}\', ", playlist.Songs[i].Name));
                         }
                     }
                 }

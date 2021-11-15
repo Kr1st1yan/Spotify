@@ -48,7 +48,6 @@ namespace KrisiFy
                         {
                             logg++;
                             displayer.loginsDisplay(readFile, logger, displayer);
-
                         }
                         else if (command.Equals("2"))
                         {

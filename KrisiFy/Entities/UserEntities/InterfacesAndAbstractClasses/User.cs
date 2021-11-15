@@ -1,4 +1,5 @@
 ﻿using KrisiFy.Interfaces;
+using KrisiFy.ReadAndWrite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,20 +8,22 @@ using System.Threading.Tasks;
 
 namespace KrisiFy.Entities.UserEntities.InterfacesAndAbstractClasses
 {
-    abstract class User : IUserInterface
+    public abstract class User : IUserInterface
     {
         private string username;
         private string password;
         private string fullName;
         private DateTime birthDate;
         private List<string> genres;
-        protected User(string username, string password, string fullName, DateTime birthDate, List<string> genres)
+        private string type;
+        protected User(string username, string password, string fullName, DateTime birthDate, List<string> genres, string type)
         {
             this.username = username;
             this.password = password;
             this.fullName = fullName;
             this.birthDate = birthDate;
             this.genres = genres;
+            this.Type = type;
         }
 
         public string Username { get => username; set => username = value; }
@@ -29,9 +32,11 @@ namespace KrisiFy.Entities.UserEntities.InterfacesAndAbstractClasses
 
         public DateTime BirthDate { get => birthDate; set => birthDate = value; }
         public List<string> Genres { get => genres; set => genres = value; }
+        public string Type { get => type; set => type = value; }
 
         virtual public void infoPrint() { }
         virtual public void playlistsPrint() { }
-        virtual public void songsAndLengthPrint(string playlistName) { }
+        virtual public void songsAndLengthPrint(string playlistName) {
+        }
     }
 }

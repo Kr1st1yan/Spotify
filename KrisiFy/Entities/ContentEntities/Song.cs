@@ -14,7 +14,6 @@ namespace KrisiFy.Entities.ContentEntities
         private Artist artist;
         private string genre;
         private string outYear;
-
         public Song(string name) : base(name)
         {
 

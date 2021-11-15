@@ -19,16 +19,17 @@ namespace KrisiFy.Displayers
             Console.WriteLine("Here are your options: ");
             Console.WriteLine("[1] Print info about me");
             Console.WriteLine("[2] Print all my playlists");
-            Console.WriteLine("[3] Print my favourite songs");
-            Console.WriteLine("[4] Print info about a playlist");
+            Console.WriteLine("[3] Print info about a playlist");
+            Console.WriteLine("[4] Print my favourite songs");
             Console.WriteLine("[5] Create a playlist");
             Console.WriteLine("[6] Remove a playlist");
-            Console.WriteLine("[7] Add songs to favourites");
-            Console.WriteLine("[8] Remove songs from favourites");
-            Console.WriteLine("[9] Add songs to a playlist");
-            Console.WriteLine("[10] Remove songs from a playlist");
+            Console.WriteLine("[7] Add songs to a playlist ");
+            Console.WriteLine("[8] Remove songs from a playlist");
+            Console.WriteLine("[9] Add songs to favourites");
+            Console.WriteLine("[10] Remove songs from favourites");
             Console.WriteLine("[11] Log out");
         }
+
         public void artistDisplay()
         {
             Console.WriteLine("Here are your options: ");
@@ -41,6 +42,7 @@ namespace KrisiFy.Displayers
             Console.WriteLine("[7] Remove songs from a album");
             Console.WriteLine("[8] Log out");
         }
+
         public void loginsDisplay(ReadFile readFile, Logger logger, Displayer displayer)
         {
             WriteOnFile writer = new WriteOnFile();
@@ -50,134 +52,118 @@ namespace KrisiFy.Displayers
             Console.WriteLine("Enter password: ");
             string password = Console.ReadLine();
 
-            Console.WriteLine("Enter role (listener/artist): ");
-            string role = Console.ReadLine();
+            bool isLoggedIn = logger.login(readFile, username, password);
 
-            if (role.Equals("listener"))
+            if (isLoggedIn)
             {
-                Listener listener = logger.listenerLogin(readFile, username, password, role);
-                if (listener == null)
+                if (logger.getUserType(readFile, username) == Constants.LISTENER)
                 {
-                    Console.WriteLine("There was a mistake while logging in");
-                }
-                else
-                {
-                    displayer.listenerDisplay();
-                    string cmnd = Console.ReadLine();
+                    Listener listener = readFile.Storage.Listeners[username];
 
-                    while (!cmnd.Equals("11"))
+                    if (listener == null)
                     {
-                        if (cmnd.Equals("1"))
+                        Console.WriteLine("There was a mistake while logging in");
+                    }
+                    else
+                    {
+                        displayer.listenerDisplay();
+                        string cmnd = Console.ReadLine();
+
+                        while (!cmnd.Equals("11"))
                         {
-                            listener.infoPrint();
-                            displayer.listenerDisplay();
-                            Console.WriteLine("Waiting for the next command...");
-                        }
-                        else if (cmnd.Equals("2"))
-                        {
-                            listener.playlistsPrint();
-                            displayer.listenerDisplay();
-                            Console.WriteLine("Waiting for the next command...");
-                        }
-                        else if (cmnd.Equals("3"))
-                        {
-                            listener.favouriteSongsPrint();
-                            displayer.listenerDisplay();
-                            Console.WriteLine("Waiting for the next command...");
-                        }
-                        else if (cmnd.Equals("4"))
-                        {
-                            Console.WriteLine("Enter playlist name: ");
-                            string playlist = Console.ReadLine();
-                            listener.songsAndLengthPrint(playlist);
-                            displayer.listenerDisplay();
-                            Console.WriteLine("Waiting for the next command...");
-                        }
-                        else if (cmnd.Equals("5"))
-                        {
-                            Console.WriteLine("Enter playlist name: ");
-                            string plName = Console.ReadLine();
-                            Playlist playlist = listener.createPlaylist(plName);
-                            if (playlist != null && !readFile.Storage.Playlists.ContainsKey(plName))
+                            if (cmnd.Equals("1"))
                             {
-                                readFile.Storage.Playlists.Add(plName, playlist);
-                                listener.PlaylistCollection.Add(playlist);
-                                Console.WriteLine("Playlist added successfully!");
+                                listener.infoPrint();
+                                displayer.listenerDisplay();
+                                Console.WriteLine("Waiting for the next command...");
                             }
-                            else
+                            else if (cmnd.Equals("2"))
                             {
-                                Console.WriteLine("There was an error with creating the playlist");
+                                listener.playlistsPrint();
+                                displayer.listenerDisplay();
+                                Console.WriteLine("Waiting for the next command...");
                             }
-                            displayer.listenerDisplay();
-                            Console.WriteLine("Waiting for the next command...");
-                        }
-                        else if (cmnd.Equals("6"))
-                        {
-                            Console.WriteLine("Enter playlist name: ");
-                            string plName = Console.ReadLine();
-                            listener.removePlaylist(plName);
-                            readFile.Storage.Playlists.Remove(plName);
-
-                            displayer.listenerDisplay();
-                            Console.WriteLine("Waiting for the next command...");
-                        }
-                        else if (cmnd.Equals("7"))
-                        {
-                            Console.WriteLine("Write the songs that you want to add in favourites: ");
-
-                            string[] songs = Console.ReadLine().Split(", ");
-
-                            foreach (string song in songs)
+                            else if (cmnd.Equals("3"))
                             {
-                                if (readFile.Storage.Songs.ContainsKey(song))
+                                Console.WriteLine("Enter playlist name: ");
+                                string playlist = Console.ReadLine();
+                                listener.songsAndLengthPrint(playlist);
+                                displayer.listenerDisplay();
+                                Console.WriteLine("Waiting for the next command...");
+                            }
+                            else if (cmnd.Equals("4"))
+                            {
+                                listener.favouriteSongsPrint();
+                                displayer.listenerDisplay();
+                                Console.WriteLine("Waiting for the next command...");
+                            }
+                            else if (cmnd.Equals("5"))
+                            {
+                                Console.WriteLine("Enter playlist name: ");
+                                string plName = Console.ReadLine();
+                                Playlist playlist = listener.createPlaylist(plName);
+                                if (playlist != null && !readFile.Storage.Playlists.ContainsKey(plName))
                                 {
-                                    listener.addSongsToFavourites(readFile.Storage.Songs[song]);
+                                    readFile.Storage.Playlists.Add(plName, playlist);
+                                    listener.PlaylistCollection.Add(playlist);
+                                    Console.WriteLine("Playlist added successfully!");
                                 }
                                 else
                                 {
-                                    Console.WriteLine("No such song exists!");
+                                    Console.WriteLine("There was an error with creating the playlist");
                                 }
+                                displayer.listenerDisplay();
+                                Console.WriteLine("Waiting for the next command...");
                             }
-                            Console.WriteLine();
-                            displayer.listenerDisplay();
-                            Console.WriteLine("Waiting for the next command...");
-                        }
-                        else if (cmnd.Equals("8"))
-                        {
-                            Console.WriteLine("Write the songs that you want to remove from favourites ?");
-                            string[] songs = Console.ReadLine().Split(", ");
-
-                            foreach (string song in songs)
+                            else if (cmnd.Equals("6"))
                             {
-                                if (readFile.Storage.Songs.ContainsKey(song))
+                                Console.WriteLine("Enter playlist name: ");
+                                string plName = Console.ReadLine();
+                                listener.removePlaylist(plName);
+                                readFile.Storage.Playlists.Remove(plName);
+                                displayer.listenerDisplay();
+                                Console.WriteLine("Waiting for the next command...");
+                            }
+                            else if (cmnd.Equals("7"))
+                            {
+                                Console.WriteLine("In which playlist do you want to add songs? ");
+                                string plName = Console.ReadLine();
+
+                                Console.WriteLine("Write the songs that you want to add to the playlist ?");
+                                string[] songs = Console.ReadLine().Split(", ");
+
+                                if (readFile.Storage.Playlists.ContainsKey(plName))
                                 {
-                                    listener.removeSongFromFavourites(readFile.Storage.Songs[song]);
+                                    foreach (string song in songs)
+                                    {
+                                        if (readFile.Storage.Songs.ContainsKey(song))
+                                        {
+                                            listener.addSongsToPlaylist(readFile.Storage.Songs[song], plName);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("No such song exists!");
+                                        }
+                                    }
                                 }
                                 else
                                 {
-                                    Console.WriteLine("No such song exists!");
+                                    Console.WriteLine("There is no playlist with this name!");
                                 }
+
+                                displayer.listenerDisplay();
+                                Console.WriteLine("Waiting for the next command...");
                             }
-
-                            displayer.listenerDisplay();
-                            Console.WriteLine("Waiting for the next command...");
-
-                        }
-                        else if (cmnd.Equals("9"))
-                        {
-                            Console.WriteLine("In which playlist do you want to add songs? ");
-                            string plName = Console.ReadLine();
-
-                            Console.WriteLine("Write the songs that you want to add to the playlist ?");
-                            string[] songs = Console.ReadLine().Split(", ");
-
-                            if (readFile.Storage.Playlists.ContainsKey(plName))
+                            else if (cmnd.Equals("8"))
                             {
+                                Console.WriteLine("Write the songs that you want to remove from favourites ?");
+                                string[] songs = Console.ReadLine().Split(", ");
+
                                 foreach (string song in songs)
                                 {
                                     if (readFile.Storage.Songs.ContainsKey(song))
                                     {
-                                        listener.addSongsToPlaylist(readFile.Storage.Songs[song], plName);
+                                        listener.removeSongFromFavourites(readFile.Storage.Songs[song]);
                                     }
                                     else
                                     {
@@ -185,31 +171,21 @@ namespace KrisiFy.Displayers
                                     }
                                 }
 
+                                displayer.listenerDisplay();
+                                Console.WriteLine("Waiting for the next command...");
                             }
-                            else
+                            else if (cmnd.Equals("9"))
                             {
-                                Console.WriteLine("There is no playlist with this name!");
-                            }
 
-                            displayer.listenerDisplay();
-                            Console.WriteLine("Waiting for the next command...");
+                                Console.WriteLine("Write the songs that you want to add in favourites: ");
 
-                        }
-                        else if (cmnd.Equals("10"))
-                        {
-                            Console.WriteLine("From which playlist do you want to remove songs? ");
-                            string plName = Console.ReadLine();
+                                string[] songs = Console.ReadLine().Split(", ");
 
-                            Console.WriteLine("Write the songs that you want to remove from the playlist ?");
-                            string[] songs = Console.ReadLine().Split(", ");
-
-                            if (readFile.Storage.Playlists.ContainsKey(plName))
-                            {
                                 foreach (string song in songs)
                                 {
                                     if (readFile.Storage.Songs.ContainsKey(song))
                                     {
-                                        listener.removeSongsFromPlaylist(readFile.Storage.Songs[song], plName);
+                                        listener.addSongsToFavourites(readFile.Storage.Songs[song]);
                                     }
                                     else
                                     {
@@ -217,171 +193,193 @@ namespace KrisiFy.Displayers
                                     }
                                 }
 
+                                Console.WriteLine();
+                                displayer.listenerDisplay();
+                                Console.WriteLine("Waiting for the next command...");
+                            }
+                            else if (cmnd.Equals("10"))
+                            {
+                                Console.WriteLine("From which playlist do you want to remove songs? ");
+                                string plName = Console.ReadLine();
+
+                                Console.WriteLine("Write the songs that you want to remove from the playlist ?");
+                                string[] songs = Console.ReadLine().Split(", ");
+
+                                if (readFile.Storage.Playlists.ContainsKey(plName))
+                                {
+                                    foreach (string song in songs)
+                                    {
+                                        if (readFile.Storage.Songs.ContainsKey(song))
+                                        {
+                                            listener.removeSongsFromPlaylist(readFile.Storage.Songs[song], plName);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("No such song exists!");
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("There is no playlist with this name!");
+                                }
+
+                                displayer.listenerDisplay();
+                                Console.WriteLine("Waiting for the next command...");
                             }
                             else
                             {
-                                Console.WriteLine("There is no playlist with this name!");
+                                Console.WriteLine("Incorrect command!");
+                                displayer.listenerDisplay();
+                                Console.WriteLine("Waiting for the next command...");
                             }
 
-                            displayer.listenerDisplay();
-                            Console.WriteLine("Waiting for the next command...");
-
+                            cmnd = Console.ReadLine();
                         }
-                        else
-                        {
-                            Console.WriteLine("Incorrect command!");
-                            displayer.listenerDisplay();
-                            Console.WriteLine("Waiting for the next command...");
-
-                        }
-
-                        cmnd = Console.ReadLine();
+                        Console.WriteLine("Logged out..");
+                        writer.write(readFile.Storage.returnAllStorageInfo());
                     }
-                    Console.WriteLine("Logged out..");
-                    writer.write(readFile.Storage.returnAllStorageInfo());
                 }
-            }
-            else if (role.Equals("artist"))
-            {
-                Artist artist = logger.artistLogin(readFile, username, password, role);
-
-                if (artist == null)
+                else if (logger.getUserType(readFile, username) == Constants.ARTIST)
                 {
-                    Console.WriteLine("There was a mistake while logging in");
-                }
-                else
-                {
+                    Artist artist = readFile.Storage.Artists[username];
 
-                    displayer.artistDisplay();
-                    string cmnd = Console.ReadLine();
-
-                    while (!cmnd.Equals("8"))
+                    if (artist == null)
                     {
-                        if (cmnd.Equals("1"))
-                        {
-                            artist.infoPrint();
-                            displayer.artistDisplay();
-                            Console.WriteLine("Waiting for the next command...");
-                        }
-                        else if (cmnd.Equals("2"))
-                        {
-                            artist.playlistsPrint();
-                            displayer.artistDisplay();
-                            Console.WriteLine("Waiting for the next command...");
-                        }
-                        else if (cmnd.Equals("3"))
-                        {
-                            Console.WriteLine("Enter album name: ");
-                            string album = Console.ReadLine();
-                            artist.songsAndLengthPrint(album);
-                            displayer.artistDisplay();
-                            Console.WriteLine("Waiting for the next command...");
-                        }
-                        else if (cmnd.Equals("4"))
-                        {
-                            Console.WriteLine("Enter album name: ");
-                            string plName = Console.ReadLine();
-                            Album album = artist.createAlbum(plName);
-                            if (album != null && !readFile.Storage.Albums.ContainsKey(plName))
-                            {
-                                readFile.Storage.Albums.Add(plName, album);
-                                artist.Albums.Add(album);
-                                Console.WriteLine("Album added successfully!");
-                            }
-                            else
-                            {
-                                Console.WriteLine("There was an error with creating the album");
-                            }
-                            displayer.artistDisplay();
-                            Console.WriteLine("Waiting for the next command...");
-                        }
-                        else if (cmnd.Equals("5"))
-                        {
-                            Console.WriteLine("Enter album name: ");
-                            string plName = Console.ReadLine();
-                            artist.deleteAlbum(plName);
-                            readFile.Storage.Albums.Remove(plName);
-
-                            displayer.artistDisplay();
-                            Console.WriteLine("Waiting for the next command...");
-                        }
-                        else if (cmnd.Equals("6"))
-                        {
-                            Console.WriteLine("In which album do you want to add songs? ");
-                            string plName = Console.ReadLine();
-
-                            Console.WriteLine("Write the songs that you want to add to the album ?");
-                            string[] songs = Console.ReadLine().Split(", ");
-
-                            if (readFile.Storage.Albums.ContainsKey(plName))
-                            {
-                                foreach (string song in songs)
-                                {
-                                    if (readFile.Storage.Songs.ContainsKey(song))
-                                    {
-                                        artist.addSongsToAlbum(readFile.Storage.Songs[song], plName);
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("No such song exists!");
-                                    }
-                                }
-
-                            }
-                            else
-                            {
-                                Console.WriteLine("There is no playlist with this name!");
-                            }
-
-                            displayer.artistDisplay();
-                            Console.WriteLine("Waiting for the next command...");
-                        }
-                        else if (cmnd.Equals("7"))
-                        {
-                            Console.WriteLine("From which album do you want to remove songs? ");
-                            string plName = Console.ReadLine();
-                            Console.WriteLine("Write the songs that you want to remove from the album ?");
-                            string[] songs = Console.ReadLine().Split(", ");
-
-                            if (readFile.Storage.Albums.ContainsKey(plName))
-                            {
-                                foreach (string song in songs)
-                                {
-                                    if (readFile.Storage.Songs.ContainsKey(song))
-                                    {
-                                        artist.removeSongsFormAlbum(readFile.Storage.Songs[song], plName);
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("No such song exists!");
-                                    }
-                                }
-
-                            }
-                            else
-                            {
-                                Console.WriteLine("There is no playlist with this name!");
-                            }
-
-
-                            Console.WriteLine("Waiting for the next command...");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Incorrect command!");
-                            displayer.artistDisplay();
-                            Console.WriteLine("Waiting for the next command...");
-                        }
-
-                        cmnd = Console.ReadLine();
+                        Console.WriteLine("There was a mistake while logging in");
                     }
-                    Console.WriteLine("Logged out..");
-                    writer.write(readFile.Storage.returnAllStorageInfo());
+                    else
+                    {
+                        displayer.artistDisplay();
+                        string cmnd = Console.ReadLine();
+
+                        while (!cmnd.Equals("8"))
+                        {
+                            if (cmnd.Equals("1"))
+                            {
+                                artist.infoPrint();
+                                displayer.artistDisplay();
+                                Console.WriteLine("Waiting for the next command...");
+                            }
+                            else if (cmnd.Equals("2"))
+                            {
+                                artist.playlistsPrint();
+                                displayer.artistDisplay();
+                                Console.WriteLine("Waiting for the next command...");
+                            }
+                            else if (cmnd.Equals("3"))
+                            {
+                                Console.WriteLine("Enter album name: ");
+                                string album = Console.ReadLine();
+                                artist.songsAndLengthPrint(album);
+                                displayer.artistDisplay();
+                                Console.WriteLine("Waiting for the next command...");
+                            }
+                            else if (cmnd.Equals("4"))
+                            {
+                                Console.WriteLine("Enter album name: ");
+                                string plName = Console.ReadLine();
+                                Album album = artist.createAlbum(plName);
+
+                                if (album != null && !readFile.Storage.Albums.ContainsKey(plName))
+                                {
+                                    readFile.Storage.Albums.Add(plName, album);
+                                    artist.Albums.Add(album);
+                                    Console.WriteLine("Album added successfully!");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("There was an error with creating the album");
+                                }
+
+                                displayer.artistDisplay();
+                                Console.WriteLine("Waiting for the next command...");
+                            }
+                            else if (cmnd.Equals("5"))
+                            {
+                                Console.WriteLine("Enter album name: ");
+                                string plName = Console.ReadLine();
+                                artist.deleteAlbum(plName);
+                                readFile.Storage.Albums.Remove(plName);
+                                displayer.artistDisplay();
+                                Console.WriteLine("Waiting for the next command...");
+                            }
+                            else if (cmnd.Equals("6"))
+                            {
+                                Console.WriteLine("In which album do you want to add songs? ");
+                                string plName = Console.ReadLine();
+
+                                Console.WriteLine("Write the songs that you want to add to the album ?");
+                                string[] songs = Console.ReadLine().Split(", ");
+
+                                if (readFile.Storage.Albums.ContainsKey(plName))
+                                {
+                                    foreach (string song in songs)
+                                    {
+                                        if (readFile.Storage.Songs.ContainsKey(song))
+                                        {
+                                            artist.addSongsToAlbum(readFile.Storage.Songs[song], plName);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("No such song exists!");
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("There is no playlist with this name!");
+                                }
+
+                                displayer.artistDisplay();
+                                Console.WriteLine("Waiting for the next command...");
+                            }
+                            else if (cmnd.Equals("7"))
+                            {
+                                Console.WriteLine("From which album do you want to remove songs? ");
+                                string plName = Console.ReadLine();
+                                Console.WriteLine("Write the songs that you want to remove from the album ?");
+                                string[] songs = Console.ReadLine().Split(", ");
+
+                                if (readFile.Storage.Albums.ContainsKey(plName))
+                                {
+                                    foreach (string song in songs)
+                                    {
+                                        if (readFile.Storage.Songs.ContainsKey(song))
+                                        {
+                                            artist.removeSongsFormAlbum(readFile.Storage.Songs[song], plName);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("No such song exists!");
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("There is no playlist with this name!");
+                                }
+
+                                Console.WriteLine("Waiting for the next command...");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Incorrect command!");
+                                displayer.artistDisplay();
+                                Console.WriteLine("Waiting for the next command...");
+                            }
+
+                            cmnd = Console.ReadLine();
+                        }
+                        Console.WriteLine("Logged out..");
+                        writer.write(readFile.Storage.returnAllStorageInfo());
+                    }
                 }
             }
             else
             {
-                Console.WriteLine("Invalid role!");
+                Console.WriteLine("No user found! Try again ...");
+                loginsDisplay(readFile, logger, displayer);
             }
         }
     }
