@@ -1,14 +1,9 @@
 ﻿using KrisiFy.Entities.ContentEntities.InterfaceAndAbstractClasses;
 using KrisiFy.Entities.UserEntities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KrisiFy.Entities.ContentEntities
 {
-    class Song : Content
+    public class Song : Content
     {
         private Album album;
         private Artist artist;

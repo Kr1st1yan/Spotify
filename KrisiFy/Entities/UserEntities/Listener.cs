@@ -1,15 +1,12 @@
 ﻿using KrisiFy.Entities.ContentEntities;
 using KrisiFy.Entities.UserEntities.InterfacesAndAbstractClasses;
-using KrisiFy.ReadAndWrite;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace KrisiFy.Entities.UserEntities
 {
-    class Listener : User
+    public class Listener : User
     {
         Playlist favouriteSongs;
         List<Playlist> playlistCollection;

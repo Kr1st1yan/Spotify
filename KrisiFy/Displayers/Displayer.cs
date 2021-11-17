@@ -1,14 +1,10 @@
 ﻿using KrisiFy.Entities.ContentEntities;
 using KrisiFy.Entities.UserEntities;
-using KrisiFy.Entities.UserEntities.InterfacesAndAbstractClasses;
 using KrisiFy.Logging;
 using KrisiFy.ReadAndWrite;
 using KrisiFy.ReadAndWriteFiles;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace KrisiFy.Displayers
 {

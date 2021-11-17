@@ -1,13 +1,11 @@
 ﻿using KrisiFy.Entities.ContentEntities.InterfaceAndAbstractClasses;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace KrisiFy.Entities.ContentEntities
 {
-    class Playlist : Content
+    public class Playlist : Content
     {
         private List<Song> songs = new List<Song>();
         public Playlist(string name) : base(name)
@@ -87,6 +85,7 @@ namespace KrisiFy.Entities.ContentEntities
                 sb.Append(String.Format("The songs in the playlist are:\n"));
                 foreach (Song song in playlist.Songs)
                 {
+                    
                     sb.Append(String.Format("    {0}. {1}\n", songCounter, song.Name));
 
                     string[] data = song.Duration.Split(":");
@@ -131,6 +130,7 @@ namespace KrisiFy.Entities.ContentEntities
                             allMinutes -= 60;
                         }
                     }
+                    songCounter++;
                 }
                 string outputHours = allHours.ToString();
                 string outputMinutes = allMinutes.ToString();
