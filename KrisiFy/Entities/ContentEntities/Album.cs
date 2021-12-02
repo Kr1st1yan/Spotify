@@ -1,13 +1,11 @@
 ﻿using KrisiFy.Entities.UserEntities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace KrisiFy.Entities.ContentEntities
 {
-    class Album : Playlist
+    public class Album : Playlist
     {
         private Artist artist;
         private List<string> genres;

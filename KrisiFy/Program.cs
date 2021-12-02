@@ -1,14 +1,7 @@
 ﻿using KrisiFy.ReadAndWrite;
 using KrisiFy.ReadAndWriteFiles;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.RegularExpressions;
-using KrisiFy.Entities.UserEntities;
-using KrisiFy.Entities.ContentEntities;
-using KrisiFy.DataStore;
 using KrisiFy.Logging;
-using KrisiFy.Entities.UserEntities.InterfacesAndAbstractClasses;
 using KrisiFy.Displayers;
 
 namespace KrisiFy

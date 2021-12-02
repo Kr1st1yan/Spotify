@@ -1,10 +1,6 @@
 ﻿using KrisiFy.Interfaces;
-using KrisiFy.ReadAndWrite;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KrisiFy.Entities.UserEntities.InterfacesAndAbstractClasses
 {

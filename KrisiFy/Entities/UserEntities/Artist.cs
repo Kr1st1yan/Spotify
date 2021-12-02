@@ -1,15 +1,13 @@
 ﻿using KrisiFy.Entities.ContentEntities;
 using KrisiFy.Entities.UserEntities.InterfacesAndAbstractClasses;
-using KrisiFy.ReadAndWrite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace KrisiFy.Entities.UserEntities
 {
-    class Artist : User
+    public class Artist : User
     {
         private List<Album> albums;
         public Artist(string username, string password, string fullName, DateTime birthDate, List<string> genres, List<Album> albums, string type) : base(username, password, fullName, birthDate, genres, type)
