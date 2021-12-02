@@ -8,6 +8,9 @@ namespace KrisiFyUnitTest
 {
     public class ArtistTests
     {
+
+        const string albumNameSet = "albumNomer1";
+
         [Test]
         public void CreateAlbum_Sucessfully()
         {
@@ -17,10 +20,10 @@ namespace KrisiFyUnitTest
             Artist artist = new Artist("az", "123", "azaz", DateTime.MinValue, genres, albums, "artist");
 
             //Act
-            Album album = artist.createAlbum("albumNomer1");
+            Album album = artist.createAlbum(albumNameSet);
 
             //Assert
-            Assert.AreEqual(album.Name, "albumNomer1");
+            Assert.AreEqual(album.Name, albumNameSet);
         }
 
         [Test]
@@ -32,12 +35,12 @@ namespace KrisiFyUnitTest
             Artist artist = new Artist("az", "123", "azaz", DateTime.MinValue, genres, albums, "artist");
 
             //Act
-            Album album = artist.createAlbum("albumNomer1");
+            Album album = artist.createAlbum(albumNameSet);
             artist.Albums.Add(album);
-            Album album1 = artist.createAlbum("albumNomer1");
+            Album albumToCheck = artist.createAlbum(albumNameSet);
 
             //Assert
-            Assert.AreEqual(album1, null);
+            Assert.AreEqual(albumToCheck, null);
         }
 
         [Test]
@@ -49,9 +52,9 @@ namespace KrisiFyUnitTest
             Artist artist = new Artist("az", "123", "azaz", DateTime.MinValue, genres, albums, "artist");
 
             //Act
-            Album album = artist.createAlbum("albumNomer1");
+            Album album = artist.createAlbum(albumNameSet);
             artist.Albums.Add(album);
-            artist.deleteAlbum("albumNomer1");
+            artist.deleteAlbum(albumNameSet);
 
             //Assert
             Assert.AreEqual(artist.Albums.Count, 0);
@@ -66,7 +69,7 @@ namespace KrisiFyUnitTest
             Artist artist = new Artist("az", "123", "azaz", DateTime.MinValue, genres, albums, "artist");
 
             //Act
-            Album album = artist.createAlbum("albumNomer1");
+            Album album = artist.createAlbum(albumNameSet);
             artist.Albums.Add(album);
             artist.deleteAlbum("albumNomer2");
 
@@ -83,12 +86,12 @@ namespace KrisiFyUnitTest
             Artist artist = new Artist("az", "123", "azaz", DateTime.MinValue, genres, albums, "artist");
             Song song = new Song("purvi");
 
-            Album album = artist.createAlbum("albumNomer1");
+            Album album = artist.createAlbum(albumNameSet);
             artist.Albums.Add(album);
             artist.Albums[0].Songs.Add(song);
 
             //Act
-            artist.removeSongsFormAlbum(song, "albumNomer1");
+            artist.removeSongsFormAlbum(song, albumNameSet);
 
             //Assert
             Assert.AreEqual(artist.Albums[0].Songs.Count, 0);
@@ -103,11 +106,11 @@ namespace KrisiFyUnitTest
             Artist artist = new Artist("az", "123", "azaz", DateTime.MinValue, genres, albums, "artist");
             Song song = new Song("purvi");
 
-            Album album = artist.createAlbum("albumNomer1");
+            Album album = artist.createAlbum(albumNameSet);
             artist.Albums.Add(album);
 
             //Act
-            artist.addSongsToAlbum(song, "albumNomer1");
+            artist.addSongsToAlbum(song, albumNameSet);
 
             //Assert
             Assert.AreEqual(artist.Albums[0].Songs.Count, 1);

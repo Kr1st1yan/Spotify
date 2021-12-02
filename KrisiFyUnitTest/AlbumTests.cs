@@ -32,10 +32,10 @@ namespace KrisiFyUnitTest
 
             //Act
             album.addSong(album.Name, song);
-            List<Song> list1 = album.Songs;
+            List<Song> listToCheck = album.Songs;
 
             //Assert
-            Assert.AreEqual(list1.Count, list.Count);
+            Assert.AreEqual(listToCheck.Count, list.Count);
         }
 
         [Test]
