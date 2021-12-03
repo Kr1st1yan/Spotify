@@ -18,7 +18,7 @@ namespace KrisiFyUnitTest
             Listener listener = new Listener("az", "123", "adf", DateTime.MinValue, genres, favourites, collection, "listener");
 
             //Act
-            Playlist playlist = listener.createPlaylist("playlist1");
+            Playlist playlist = listener.CreatePlaylist("playlist1");
 
             //Assert
             Assert.AreEqual(playlist.Name, "playlist1");
@@ -34,11 +34,11 @@ namespace KrisiFyUnitTest
             Listener listener = new Listener("az", "123", "adf", DateTime.MinValue, genres, favourites, collection, "listener");
 
             //Act
-            Playlist playlist = listener.createPlaylist("playlist1");
+            Playlist playlist = listener.CreatePlaylist("playlist1");
             listener.PlaylistCollection.Add(playlist);
 
             //Assert
-            Assert.AreEqual(listener.createPlaylist("playlist1"), null);
+            Assert.AreEqual(listener.CreatePlaylist("playlist1"), null);
         }
 
         [Test]
@@ -51,9 +51,9 @@ namespace KrisiFyUnitTest
             Listener listener = new Listener("az", "123", "adf", DateTime.MinValue, genres, favourites, collection, "listener");
 
             //Act
-            Playlist playlist = listener.createPlaylist("playlist1");
+            Playlist playlist = listener.CreatePlaylist("playlist1");
             listener.PlaylistCollection.Add(playlist);
-            listener.removePlaylist("playlist1");
+            listener.RemovePlaylist("playlist1");
 
             //Assert
             Assert.AreEqual(listener.PlaylistCollection.Count, 0);
@@ -69,9 +69,9 @@ namespace KrisiFyUnitTest
             Listener listener = new Listener("az", "123", "adf", DateTime.MinValue, genres, favourites, collection, "listener");
 
             //Act
-            Playlist playlist = listener.createPlaylist("playlist1");
+            Playlist playlist = listener.CreatePlaylist("playlist1");
             listener.PlaylistCollection.Add(playlist);
-            listener.removePlaylist("pls");
+            listener.RemovePlaylist("pls");
 
             //Assert
             Assert.AreEqual(listener.PlaylistCollection.Count, 1);
@@ -88,7 +88,7 @@ namespace KrisiFyUnitTest
 
             //Act
             Song song = new Song("dqlkambqlo");
-            listener.addSongsToFavourites(song);
+            listener.AddSongsToFavourites(song);
 
             //Assert
             Assert.AreEqual(listener.FavouriteSongs.Songs.Count, 1);
@@ -105,8 +105,8 @@ namespace KrisiFyUnitTest
 
             //Act
             Song song = new Song("dqlkambqlo");
-            listener.addSongsToFavourites(song);
-            listener.addSongsToFavourites(song);
+            listener.AddSongsToFavourites(song);
+            listener.AddSongsToFavourites(song);
 
             //Assert
             Assert.AreEqual(listener.FavouriteSongs.Songs.Count, 1);
@@ -124,8 +124,8 @@ namespace KrisiFyUnitTest
 
             //Act
             Song song = new Song("dqlkambqlo");
-            listener.addSongsToFavourites(song);
-            listener.removeSongFromFavourites(song);
+            listener.AddSongsToFavourites(song);
+            listener.RemoveSongFromFavourites(song);
 
             //Assert
             Assert.AreEqual(listener.FavouriteSongs.Songs.Count, 0);
@@ -144,7 +144,7 @@ namespace KrisiFyUnitTest
 
             //Act
             Song song = new Song("dqlkambqlo");
-            listener.addSongsToPlaylist(song, "jiv");
+            listener.AddSongsToPlaylist(song, "jiv");
 
             //Assert
             Assert.AreEqual(listener.PlaylistCollection[0].Songs.Count, 1);
@@ -163,8 +163,8 @@ namespace KrisiFyUnitTest
 
             //Act
             Song song = new Song("dqlkambqlo");
-            listener.addSongsToPlaylist(song, "jiv");
-            listener.removeSongsFromPlaylist(song, "jiv");
+            listener.AddSongsToPlaylist(song, "jiv");
+            listener.RemoveSongsFromPlaylist(song, "jiv");
 
             //Assert
             Assert.AreEqual(listener.PlaylistCollection[0].Songs.Count, 0);

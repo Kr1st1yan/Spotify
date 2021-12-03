@@ -14,7 +14,7 @@ namespace KrisiFyUnitTest
             Song song = new Song("pesen1");
 
             //Act
-            album.addSong(album.Name, song);
+            album.AddSong(song);
 
             //Assert
             Assert.Contains(song, album.Songs);
@@ -26,12 +26,12 @@ namespace KrisiFyUnitTest
             //Arrange
             Album album = new Album("pesni");
             Song song = new Song("pesen1");
-            album.addSong(album.Name, song);
+            album.AddSong(song);
             List<Song> list = new List<Song>();
             list.Add(song);
 
             //Act
-            album.addSong(album.Name, song);
+            album.AddSong(song);
             List<Song> listToCheck = album.Songs;
 
             //Assert
@@ -44,10 +44,10 @@ namespace KrisiFyUnitTest
             //Arrange
             Album album = new Album("pesni");
             Song song = new Song("pesen1");
-            album.addSong(album.Name, song);
+            album.AddSong(song);
 
             //Act 
-            album.removeSong(album.Name, song);
+            album.RemoveSong(song);
 
             //Assert
             Assert.AreEqual(album.Songs.Count, 0);
