@@ -20,56 +20,52 @@ namespace KrisiFy.Entities.ContentEntities
             this.songs = songs;
         }
 
-        public void addSong(string playListName, Song songToAdd)
+        public void AddSong(Song songToAdd)
         {
-            if (Name.Equals(playListName))
+            if (Songs.Count == 0)
             {
-                if (Songs.Count == 0)
+                Songs.Add(songToAdd);
+
+                Console.WriteLine("Song {0} added in {1}!", songToAdd.Name, this.GetType().Name);
+            }
+            else
+            {
+                if (Songs.Contains(songToAdd))
                 {
-                    Songs.Add(songToAdd);
-                    Console.WriteLine("Song {0} added in playlist!", songToAdd.Name);
+                    Console.WriteLine("Song is already in this {0}!", this.GetType().Name);
                 }
                 else
                 {
-                    if (Songs.Contains(songToAdd))
-                    {
-                        Console.WriteLine("Song is already in this playlist!");
-                    }
-                    else
-                    {
-                        Songs.Add(songToAdd);
-                        Console.WriteLine("Song added in playlist!");
-                    }
+                    Songs.Add(songToAdd);
+                    Console.WriteLine("Song added in {0}!", this.GetType().Name);
                 }
             }
         }
 
-        public void removeSong(string playListName, Song songToRemove)
+        public void RemoveSong(Song songToRemove)
         {
-            if (Name.Equals(playListName))
+
+            if (Songs.Count == 0)
             {
-                if (Songs.Count == 0)
+                Console.WriteLine("The {0} is empty!", this.GetType().Name);
+            }
+            else
+            {
+                if (Songs.Contains(songToRemove))
                 {
-                    Console.WriteLine("The playlist is empty!");
+                    Songs.Remove(songToRemove);
+                    Console.WriteLine("Song is removed from {0}!", this.GetType().Name);
                 }
                 else
                 {
-                    if (Songs.Contains(songToRemove))
-                    {
-                        Songs.Remove(songToRemove);
-                        Console.WriteLine("Song is removed from playlist!");
-                    }
-                    else
-                    {
-                        Console.WriteLine("No such a song exists!");
-                    }
+                    Console.WriteLine("No such a song exists!");
                 }
             }
         }
 
         public List<Song> Songs { get => songs; set => songs = value; }
 
-        virtual public string calculatePlaylistTime(Playlist playlist)
+        virtual public string CalculatePlaylistTime(Playlist playlist)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -154,7 +150,7 @@ namespace KrisiFy.Entities.ContentEntities
             return sb.ToString();
         }
 
-        virtual public string getPlaylistInfo(List<Playlist> PlaylistCollection, string playListName)
+        virtual public string GetPlaylistInfo(List<Playlist> PlaylistCollection, string playListName)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -164,9 +160,10 @@ namespace KrisiFy.Entities.ContentEntities
                 if (playlist.Name.Equals(playListName))
                 {
                     sb.Append(String.Format("Playlist name is {0}\n", playlist.Name));
-                    sb.Append(calculatePlaylistTime(playlist));
+                    sb.Append(CalculatePlaylistTime(playlist));
                 }
             }
+
             return sb.ToString();
         }
     }

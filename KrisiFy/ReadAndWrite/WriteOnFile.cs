@@ -11,7 +11,7 @@ namespace KrisiFy.ReadAndWriteFiles
     {
         private List<string> data = new List<string>();
         public List<string> Data { get => data; set => data = value; }
-        public async Task write(string input)
+        public async Task Write(string input)
         {
             File.WriteAllText(Constants.PATH_TO_TEXT_FILE, String.Empty);
             using StreamWriter file = new StreamWriter(Constants.PATH_TO_TEXT_FILE, append: true);

@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 namespace KrisiFy.Logging
 {
     class Logger
-    {
-        public void register(ReadFile readFile)
+    { 
+        public void Register(ReadFile readFile)
         {
             Console.Write("Enter username: ");
             string username = Console.ReadLine();
@@ -72,7 +72,8 @@ namespace KrisiFy.Logging
                 }
             }
         }
-        public bool login(ReadFile readFile, string username, string password)
+
+        public bool Login(ReadFile readFile, string username, string password)
         {
             if (readFile.Storage.Users.ContainsKey(username))
             {
@@ -84,7 +85,7 @@ namespace KrisiFy.Logging
             return false;
         }
 
-        public string getUserType(ReadFile readFile, string username)
+        public string GetUserType(ReadFile readFile, string username)
         {
             return readFile.Storage.Users[username].Type;
         }

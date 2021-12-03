@@ -34,9 +34,9 @@ namespace KrisiFy.Entities.UserEntities.InterfacesAndAbstractClasses
         public List<string> Genres { get => genres; set => genres = value; }
         public string Type { get => type; set => type = value; }
 
-        virtual public void infoPrint() { }
-        virtual public void playlistsPrint() { }
-        virtual public void songsAndLengthPrint(string playlistName) {
+        virtual public void InfoPrint() { }
+        virtual public void PlaylistsPrint() { }
+        virtual public void SongsAndLengthPrint(string playlistName) {
         }
     }
 }

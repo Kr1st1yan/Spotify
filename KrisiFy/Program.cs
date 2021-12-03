@@ -21,7 +21,7 @@ namespace KrisiFy
             ReadFile readFile = new ReadFile();
             Displayer displayer = new Displayer();
             WriteOnFile writer = new WriteOnFile();
-            readFile.read();
+            readFile.Read();
 
             Console.WriteLine("Welcome to KrisiFy!");
             Console.WriteLine();
@@ -36,7 +36,7 @@ namespace KrisiFy
                 if (input.Equals("1"))
                 {
                     validator++;
-                    logger.register(readFile);
+                    logger.Register(readFile);
                     int logg = 0;
 
                     Console.WriteLine("Do you want to log in?      Yes [1]      No [2]");
@@ -47,11 +47,11 @@ namespace KrisiFy
                         if (command.Equals("1"))
                         {
                             logg++;
-                            displayer.loginsDisplay(readFile, logger, displayer);
+                            displayer.LoginsDisplay(readFile, logger, displayer);
                         }
                         else if (command.Equals("2"))
                         {
-                            writer.write(readFile.Storage.returnAllStorageInfo());
+                            writer.Write(readFile.Storage.ReturnAllStorageInfo());
                             break;
                         }
                         else
@@ -63,7 +63,7 @@ namespace KrisiFy
                 else if (input.Equals("2"))
                 {
                     validator++;
-                    displayer.loginsDisplay(readFile, logger, displayer);
+                    displayer.LoginsDisplay(readFile, logger, displayer);
                 }
                 else
                 {

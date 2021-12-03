@@ -18,7 +18,7 @@ namespace KrisiFy.ReadAndWrite
 
         public Storage Storage { get => storage; set => storage = value; }
 
-        public void read()
+        public void Read()
         {
             Regex userRegex = new Regex("(?<=<user>)<(?<username>\\S+)>\\((?<password>.+)\\){(?<type>[a-z]+)}(?=<\\/user>)");
             Regex songRegex = new Regex("(?<=<song>)<(?<name>.+)>\\[(?<length>[0-9]{1,}:[0-9]{2})\\](?=<\\/song)");

@@ -22,7 +22,7 @@ namespace KrisiFy.Entities.UserEntities
             this.PlaylistCollection = playlistCollection;
         }
 
-        public override void infoPrint()
+        public override void InfoPrint()
         {
             StringBuilder sb = new StringBuilder();
             string outputString = String.Format("Username: {0}\nPassword: {1}\nFull name: {2}\nBirth date: {3}\nGenres: \n", Username, Password, FullName, BirthDate.ToString("dd/MM/yyyy"));
@@ -75,7 +75,7 @@ namespace KrisiFy.Entities.UserEntities
             Console.WriteLine(sb.ToString());
         }
 
-        public override void playlistsPrint()
+        public override void PlaylistsPrint()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -96,7 +96,7 @@ namespace KrisiFy.Entities.UserEntities
             Console.WriteLine(sb.ToString());
         }
 
-        public void favouriteSongsPrint()
+        public void FavouriteSongsPrint()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -122,7 +122,7 @@ namespace KrisiFy.Entities.UserEntities
             Console.WriteLine(sb.ToString());
         }
 
-        public override void songsAndLengthPrint(string playListName)
+        public override void SongsAndLengthPrint(string playListName)
         {
             int count = 0;
             StringBuilder sb = new StringBuilder();
@@ -134,54 +134,45 @@ namespace KrisiFy.Entities.UserEntities
             else
             {
                 Playlist playlist = new Playlist(playListName);
-                Console.WriteLine(playlist.getPlaylistInfo(PlaylistCollection, playListName));
+                Console.WriteLine(playlist.GetPlaylistInfo(PlaylistCollection, playListName));
             }
         }
 
-        public Playlist createPlaylist(string name)
+        public Playlist CreatePlaylist(string name)
         {
-            int count = 0;
-            foreach (Playlist playlist1 in PlaylistCollection)
-            {
-                if (playlist1.Name.Equals(name))
-                {
-                    count++;
-                    Console.WriteLine("Playlist already exists!");
-                    break;
-                }
-            }
+            Playlist playlist = playlistCollection.Find(pl => pl.Name == name);
 
-            if (count == 0)
+            if (playlist == null)
             {
                 List<Song> songs = new List<Song>();
-                Playlist playlist = new Playlist(name, "", songs);
+                Playlist playlistToReturn = new Playlist(name, "", songs);
 
-                return playlist;
+                return playlistToReturn;
             }
+            else
+            {
+                Console.WriteLine("Playlist already exists!");
+            }
+
             return null;
         }
 
-        public void removePlaylist(string name)
+        public void RemovePlaylist(string name)
         {
-            int count = 0;
-            foreach (Playlist playlist1 in PlaylistCollection)
-            {
-                if (playlist1.Name.Equals(name))
-                {
-                    count++;
-                    PlaylistCollection.Remove(playlist1);
-                    Console.WriteLine("Playlist removed!");
+            Playlist playlist = playlistCollection.Find(pl => pl.Name == name);
 
-                    break;
-                }
-            }
-            if (count == 0)
+            if (playlist == null)
             {
                 Console.WriteLine("Playlist with this name does not exist!");
             }
+            else
+            {
+                Console.WriteLine("Playlist was removed succesfully!");
+                playlistCollection.Remove(playlist);
+            }
         }
 
-        public void addSongsToFavourites(Song songToAdd)
+        public void AddSongsToFavourites(Song songToAdd)
         {
             if (FavouriteSongs.Songs.Count == 0)
             {
@@ -202,7 +193,7 @@ namespace KrisiFy.Entities.UserEntities
             }
         }
 
-        public void removeSongFromFavourites(Song songToRemove)
+        public void RemoveSongFromFavourites(Song songToRemove)
         {
             if (FavouriteSongs.Songs.Count == 0)
             {
@@ -222,7 +213,7 @@ namespace KrisiFy.Entities.UserEntities
             }
         }
 
-        public void addSongsToPlaylist(Song songToAdd, string playListName)
+        public void AddSongsToPlaylist(Song songToAdd, string playListName)
         {
             if (playlistCollection.Count == 0)
             {
@@ -230,14 +221,20 @@ namespace KrisiFy.Entities.UserEntities
             }
             else
             {
-                foreach (Playlist playlist in PlaylistCollection)
+                Playlist playlist = playlistCollection.Find(pl => pl.Name == playListName);
+
+                if (playlist == null)
                 {
-                    playlist.addSong(playListName, songToAdd);
+                    Console.WriteLine("There is no playlist with this name in your playlists!");
+                }
+                else
+                {
+                    playlist.AddSong(songToAdd);
                 }
             }
         }
 
-        public void removeSongsFromPlaylist(Song songToRemove, string playListName)
+        public void RemoveSongsFromPlaylist(Song songToRemove, string playListName)
         {
             if (playlistCollection.Count == 0)
             {
@@ -245,9 +242,15 @@ namespace KrisiFy.Entities.UserEntities
             }
             else
             {
-                foreach (Playlist playlist in PlaylistCollection)
+                Playlist playlist = playlistCollection.Find(pl => pl.Name == playListName);
+
+                if (playlist == null)
                 {
-                    playlist.removeSong(playListName, songToRemove);
+                    Console.WriteLine("There is no playlist with this name in your playlists!");
+                }
+                else
+                {
+                    playlist.RemoveSong(songToRemove);
                 }
             }
         }

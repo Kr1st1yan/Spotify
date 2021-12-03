@@ -18,7 +18,7 @@ namespace KrisiFy.Entities.UserEntities
         }
 
         public List<Album> Albums { get => albums; set => albums = value; }
-        public override void infoPrint()
+        public override void InfoPrint()
         {
             StringBuilder sb = new StringBuilder();
             string outputString = String.Format("Username: {0}\nPassword: {1}\nFull name: {2}\nBirth date: {3}\nGenres: \n", Username, Password, FullName, BirthDate.ToString("dd/MM/yyyy"));
@@ -54,7 +54,8 @@ namespace KrisiFy.Entities.UserEntities
             }
             Console.WriteLine(sb.ToString());
         }
-        public override void playlistsPrint()
+
+        public override void PlaylistsPrint()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -90,8 +91,7 @@ namespace KrisiFy.Entities.UserEntities
             Console.WriteLine(sb.ToString());
         }
 
-
-        public override void songsAndLengthPrint(string albumName)
+        public override void SongsAndLengthPrint(string albumName)
         {
             int count = 0;
             StringBuilder sb = new StringBuilder();
@@ -105,68 +105,72 @@ namespace KrisiFy.Entities.UserEntities
                 Album album = new Album(albumName);
                 List<Playlist> castedList = Albums.Cast<Playlist>().ToList();
 
-                Console.WriteLine(album.getPlaylistInfo(Albums, albumName, Genres));
+                Console.WriteLine(album.GetPlaylistInfo(Albums, albumName, Genres));
             }
         }
-        public Album createAlbum(string name)
-        {
-            int count = 0;
-            foreach (Album album in albums)
-            {
-                if (album.Name.Equals(name))
-                {
-                    count++;
-                    Console.WriteLine("Album already exists!");
-                    break;
-                }
-            }
 
-            if (count == 0)
+        public Album CreateAlbum(string name)
+        {
+            Album album = Albums.Find(pl => pl.Name == name);
+
+            if (album == null)
             {
                 List<Song> songs = new List<Song>();
                 List<string> genres = new List<string>();
                 List<Album> albums1 = new List<Album>();
                 Artist artist = new Artist("", "", "", DateTime.MinValue, genres, albums1, "artist");
-                Album album = new Album(name, "", songs, artist, genres, "");
+                Album albumToReturn = new Album(name, "", songs, artist, genres, "");
 
-                return album;
+                return albumToReturn;
             }
+            else
+            {
+                Console.WriteLine("Playlist already exists!");
+            }
+
             return null;
         }
-        public void deleteAlbum(string name)
-        {
-            int count = 0;
-            foreach (Album album in albums)
-            {
-                if (album.Name.Equals(name))
-                {
-                    count++;
-                    albums.Remove(album);
-                    Console.WriteLine("Album deleted!");
 
-                    break;
-                }
-            }
-            if (count == 0)
+        public void DeleteAlbum(string name)
+        {
+            Album album = Albums.Find(pl => pl.Name == name);
+
+            if (album == null)
             {
                 Console.WriteLine("Album with this name does not exist!");
             }
+            else
+            {
+                Console.WriteLine("Album was removed succesfully!");
+                Albums.Remove(album);
+            }
         }
-        public void removeSongsFormAlbum(Song songToRemove, string albumName)
+
+        public void RemoveSongsFormAlbum(Song songToRemove, string albumName)
         {
+
+
             if (albums.Count == 0)
             {
                 Console.WriteLine("Collection is empty, there are no albums to remove song from!");
             }
             else
             {
-                foreach (Album album in albums)
+                Album album = Albums.Find(pl => pl.Name == albumName);
+
+                if (album == null)
                 {
-                    album.removeSong(albumName, songToRemove);
+                    Console.WriteLine("There is no album with this name");
+                }
+                else
+                {
+                    album.RemoveSong(songToRemove);
+                    Console.WriteLine("Song removed from album!");
                 }
             }
         }
-        public void addSongsToAlbum(Song songToAdd, string albumName)
+
+        public void AddSongsToAlbum(Song songToAdd, string albumName)
         {
             if (albums.Count == 0)
             {
@@ -174,9 +178,16 @@ namespace KrisiFy.Entities.UserEntities
             }
             else
             {
-                foreach (Album album in albums)
+                Album album = Albums.Find(pl => pl.Name == albumName);
+
+                if (album == null)
                 {
-                    album.addSong(albumName, songToAdd);
+                    Console.WriteLine("There is no playlist with this name");
+                }
+                else
+                {
+                    album.AddSong(songToAdd);
+                    Console.WriteLine("Song added to album!");
                 }
             }
         }

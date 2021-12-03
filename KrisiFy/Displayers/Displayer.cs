@@ -14,7 +14,7 @@ namespace KrisiFy.Displayers
 {
     class Displayer
     {
-        public void listenerDisplay()
+        public void ListenerDisplay()
         {
             Console.WriteLine("Here are your options: ");
             Console.WriteLine("[1] Print info about me");
@@ -30,7 +30,7 @@ namespace KrisiFy.Displayers
             Console.WriteLine("[11] Log out");
         }
 
-        public void artistDisplay()
+        public void ArtistDisplay()
         {
             Console.WriteLine("Here are your options: ");
             Console.WriteLine("[1] Print info about me");
@@ -43,7 +43,7 @@ namespace KrisiFy.Displayers
             Console.WriteLine("[8] Log out");
         }
 
-        public void loginsDisplay(ReadFile readFile, Logger logger, Displayer displayer)
+        public void LoginsDisplay(ReadFile readFile, Logger logger, Displayer displayer)
         {
             WriteOnFile writer = new WriteOnFile();
 
@@ -52,11 +52,11 @@ namespace KrisiFy.Displayers
             Console.WriteLine("Enter password: ");
             string password = Console.ReadLine();
 
-            bool isLoggedIn = logger.login(readFile, username, password);
+            bool isLoggedIn = logger.Login(readFile, username, password);
 
             if (isLoggedIn)
             {
-                if (logger.getUserType(readFile, username) == Constants.LISTENER)
+                if (logger.GetUserType(readFile, username) == Constants.LISTENER)
                 {
                     Listener listener = readFile.Storage.Listeners[username];
 
@@ -66,42 +66,42 @@ namespace KrisiFy.Displayers
                     }
                     else
                     {
-                        displayer.listenerDisplay();
+                        displayer.ListenerDisplay();
                         string cmnd = Console.ReadLine();
 
                         while (!cmnd.Equals("11"))
                         {
                             if (cmnd.Equals("1"))
                             {
-                                listener.infoPrint();
-                                displayer.listenerDisplay();
+                                listener.InfoPrint();
+                                displayer.ListenerDisplay();
                                 Console.WriteLine("Waiting for the next command...");
                             }
                             else if (cmnd.Equals("2"))
                             {
-                                listener.playlistsPrint();
-                                displayer.listenerDisplay();
+                                listener.PlaylistsPrint();
+                                displayer.ListenerDisplay();
                                 Console.WriteLine("Waiting for the next command...");
                             }
                             else if (cmnd.Equals("3"))
                             {
                                 Console.WriteLine("Enter playlist name: ");
                                 string playlist = Console.ReadLine();
-                                listener.songsAndLengthPrint(playlist);
-                                displayer.listenerDisplay();
+                                listener.SongsAndLengthPrint(playlist);
+                                displayer.ListenerDisplay();
                                 Console.WriteLine("Waiting for the next command...");
                             }
                             else if (cmnd.Equals("4"))
                             {
-                                listener.favouriteSongsPrint();
-                                displayer.listenerDisplay();
+                                listener.FavouriteSongsPrint();
+                                displayer.ListenerDisplay();
                                 Console.WriteLine("Waiting for the next command...");
                             }
                             else if (cmnd.Equals("5"))
                             {
                                 Console.WriteLine("Enter playlist name: ");
                                 string plName = Console.ReadLine();
-                                Playlist playlist = listener.createPlaylist(plName);
+                                Playlist playlist = listener.CreatePlaylist(plName);
                                 if (playlist != null && !readFile.Storage.Playlists.ContainsKey(plName))
                                 {
                                     readFile.Storage.Playlists.Add(plName, playlist);
@@ -112,16 +112,16 @@ namespace KrisiFy.Displayers
                                 {
                                     Console.WriteLine("There was an error with creating the playlist");
                                 }
-                                displayer.listenerDisplay();
+                                displayer.ListenerDisplay();
                                 Console.WriteLine("Waiting for the next command...");
                             }
                             else if (cmnd.Equals("6"))
                             {
                                 Console.WriteLine("Enter playlist name: ");
                                 string plName = Console.ReadLine();
-                                listener.removePlaylist(plName);
+                                listener.RemovePlaylist(plName);
                                 readFile.Storage.Playlists.Remove(plName);
-                                displayer.listenerDisplay();
+                                displayer.ListenerDisplay();
                                 Console.WriteLine("Waiting for the next command...");
                             }
                             else if (cmnd.Equals("7"))
@@ -138,7 +138,7 @@ namespace KrisiFy.Displayers
                                     {
                                         if (readFile.Storage.Songs.ContainsKey(song))
                                         {
-                                            listener.addSongsToPlaylist(readFile.Storage.Songs[song], plName);
+                                            listener.AddSongsToPlaylist(readFile.Storage.Songs[song], plName);
                                         }
                                         else
                                         {
@@ -151,53 +151,10 @@ namespace KrisiFy.Displayers
                                     Console.WriteLine("There is no playlist with this name!");
                                 }
 
-                                displayer.listenerDisplay();
+                                displayer.ListenerDisplay();
                                 Console.WriteLine("Waiting for the next command...");
                             }
                             else if (cmnd.Equals("8"))
-                            {
-                                Console.WriteLine("Write the songs that you want to remove from favourites ?");
-                                string[] songs = Console.ReadLine().Split(", ");
-
-                                foreach (string song in songs)
-                                {
-                                    if (readFile.Storage.Songs.ContainsKey(song))
-                                    {
-                                        listener.removeSongFromFavourites(readFile.Storage.Songs[song]);
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("No such song exists!");
-                                    }
-                                }
-
-                                displayer.listenerDisplay();
-                                Console.WriteLine("Waiting for the next command...");
-                            }
-                            else if (cmnd.Equals("9"))
-                            {
-
-                                Console.WriteLine("Write the songs that you want to add in favourites: ");
-
-                                string[] songs = Console.ReadLine().Split(", ");
-
-                                foreach (string song in songs)
-                                {
-                                    if (readFile.Storage.Songs.ContainsKey(song))
-                                    {
-                                        listener.addSongsToFavourites(readFile.Storage.Songs[song]);
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("No such song exists!");
-                                    }
-                                }
-
-                                Console.WriteLine();
-                                displayer.listenerDisplay();
-                                Console.WriteLine("Waiting for the next command...");
-                            }
-                            else if (cmnd.Equals("10"))
                             {
                                 Console.WriteLine("From which playlist do you want to remove songs? ");
                                 string plName = Console.ReadLine();
@@ -211,7 +168,7 @@ namespace KrisiFy.Displayers
                                     {
                                         if (readFile.Storage.Songs.ContainsKey(song))
                                         {
-                                            listener.removeSongsFromPlaylist(readFile.Storage.Songs[song], plName);
+                                            listener.RemoveSongsFromPlaylist(readFile.Storage.Songs[song], plName);
                                         }
                                         else
                                         {
@@ -224,23 +181,64 @@ namespace KrisiFy.Displayers
                                     Console.WriteLine("There is no playlist with this name!");
                                 }
 
-                                displayer.listenerDisplay();
+                                displayer.ListenerDisplay();
+                                Console.WriteLine("Waiting for the next command...");
+                            }
+                            else if (cmnd.Equals("9"))
+                            {
+
+                                Console.WriteLine("Write the songs that you want to add in favourites: ");
+
+                                string[] songs = Console.ReadLine().Split(", ");
+
+                                foreach (string song in songs)
+                                {
+                                    if (readFile.Storage.Songs.ContainsKey(song))
+                                    {
+                                        listener.AddSongsToFavourites(readFile.Storage.Songs[song]);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("No such song exists!");
+                                    }
+                                }
+
+                                Console.WriteLine();
+                                displayer.ListenerDisplay();
+                                Console.WriteLine("Waiting for the next command...");
+                            }
+                            else if (cmnd.Equals("10"))
+                            {
+                                Console.WriteLine("Write the songs that you want to remove from favourites ?");
+                                string[] songs = Console.ReadLine().Split(", ");
+
+                                foreach (string song in songs)
+                                {
+                                    if (readFile.Storage.Songs.ContainsKey(song))
+                                    {
+                                        listener.RemoveSongFromFavourites(readFile.Storage.Songs[song]);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("No such song exists!");
+                                    }
+                                }
+                                displayer.ListenerDisplay();
                                 Console.WriteLine("Waiting for the next command...");
                             }
                             else
                             {
                                 Console.WriteLine("Incorrect command!");
-                                displayer.listenerDisplay();
+                                displayer.ListenerDisplay();
                                 Console.WriteLine("Waiting for the next command...");
                             }
-
                             cmnd = Console.ReadLine();
                         }
                         Console.WriteLine("Logged out..");
-                        writer.write(readFile.Storage.returnAllStorageInfo());
+                        writer.Write(readFile.Storage.ReturnAllStorageInfo());
                     }
                 }
-                else if (logger.getUserType(readFile, username) == Constants.ARTIST)
+                else if (logger.GetUserType(readFile, username) == Constants.ARTIST)
                 {
                     Artist artist = readFile.Storage.Artists[username];
 
@@ -250,36 +248,36 @@ namespace KrisiFy.Displayers
                     }
                     else
                     {
-                        displayer.artistDisplay();
+                        displayer.ArtistDisplay();
                         string cmnd = Console.ReadLine();
 
                         while (!cmnd.Equals("8"))
                         {
                             if (cmnd.Equals("1"))
                             {
-                                artist.infoPrint();
-                                displayer.artistDisplay();
+                                artist.InfoPrint();
+                                displayer.ArtistDisplay();
                                 Console.WriteLine("Waiting for the next command...");
                             }
                             else if (cmnd.Equals("2"))
                             {
-                                artist.playlistsPrint();
-                                displayer.artistDisplay();
+                                artist.PlaylistsPrint();
+                                displayer.ArtistDisplay();
                                 Console.WriteLine("Waiting for the next command...");
                             }
                             else if (cmnd.Equals("3"))
                             {
                                 Console.WriteLine("Enter album name: ");
                                 string album = Console.ReadLine();
-                                artist.songsAndLengthPrint(album);
-                                displayer.artistDisplay();
+                                artist.SongsAndLengthPrint(album);
+                                displayer.ArtistDisplay();
                                 Console.WriteLine("Waiting for the next command...");
                             }
                             else if (cmnd.Equals("4"))
                             {
                                 Console.WriteLine("Enter album name: ");
                                 string plName = Console.ReadLine();
-                                Album album = artist.createAlbum(plName);
+                                Album album = artist.CreateAlbum(plName);
 
                                 if (album != null && !readFile.Storage.Albums.ContainsKey(plName))
                                 {
@@ -292,16 +290,16 @@ namespace KrisiFy.Displayers
                                     Console.WriteLine("There was an error with creating the album");
                                 }
 
-                                displayer.artistDisplay();
+                                displayer.ArtistDisplay();
                                 Console.WriteLine("Waiting for the next command...");
                             }
                             else if (cmnd.Equals("5"))
                             {
                                 Console.WriteLine("Enter album name: ");
                                 string plName = Console.ReadLine();
-                                artist.deleteAlbum(plName);
+                                artist.DeleteAlbum(plName);
                                 readFile.Storage.Albums.Remove(plName);
-                                displayer.artistDisplay();
+                                displayer.ArtistDisplay();
                                 Console.WriteLine("Waiting for the next command...");
                             }
                             else if (cmnd.Equals("6"))
@@ -318,7 +316,7 @@ namespace KrisiFy.Displayers
                                     {
                                         if (readFile.Storage.Songs.ContainsKey(song))
                                         {
-                                            artist.addSongsToAlbum(readFile.Storage.Songs[song], plName);
+                                            artist.AddSongsToAlbum(readFile.Storage.Songs[song], plName);
                                         }
                                         else
                                         {
@@ -331,7 +329,7 @@ namespace KrisiFy.Displayers
                                     Console.WriteLine("There is no playlist with this name!");
                                 }
 
-                                displayer.artistDisplay();
+                                displayer.ArtistDisplay();
                                 Console.WriteLine("Waiting for the next command...");
                             }
                             else if (cmnd.Equals("7"))
@@ -347,7 +345,7 @@ namespace KrisiFy.Displayers
                                     {
                                         if (readFile.Storage.Songs.ContainsKey(song))
                                         {
-                                            artist.removeSongsFormAlbum(readFile.Storage.Songs[song], plName);
+                                            artist.RemoveSongsFormAlbum(readFile.Storage.Songs[song], plName);
                                         }
                                         else
                                         {
@@ -365,21 +363,21 @@ namespace KrisiFy.Displayers
                             else
                             {
                                 Console.WriteLine("Incorrect command!");
-                                displayer.artistDisplay();
+                                displayer.ArtistDisplay();
                                 Console.WriteLine("Waiting for the next command...");
                             }
 
                             cmnd = Console.ReadLine();
                         }
                         Console.WriteLine("Logged out..");
-                        writer.write(readFile.Storage.returnAllStorageInfo());
+                        writer.Write(readFile.Storage.ReturnAllStorageInfo());
                     }
                 }
             }
             else
             {
                 Console.WriteLine("No user found! Try again ...");
-                loginsDisplay(readFile, logger, displayer);
+                LoginsDisplay(readFile, logger, displayer);
             }
         }
     }

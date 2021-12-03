@@ -29,21 +29,21 @@ namespace KrisiFy.DataStore
         public Dictionary<string, Playlist> Playlists { get => playlists; set => playlists = value; }
         public Dictionary<string, User> Users { get => users; set => users = value; }
 
-        public string returnAllStorageInfo()
+        public string ReturnAllStorageInfo()
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.Append(returnUserInfo());
-            sb.Append(returnListenerInfo());
-            sb.Append(returnArtistInfo());
-            sb.Append(returnAlbumInfo());
-            sb.Append(returnSongInfo());
-            sb.Append(returnPlaylistInfo());
+            sb.Append(ReturnUserInfo());
+            sb.Append(ReturnListenerInfo());
+            sb.Append(ReturnArtistInfo());
+            sb.Append(ReturnAlbumInfo());
+            sb.Append(ReturnSongInfo());
+            sb.Append(ReturnPlaylistInfo());
 
             return sb.ToString();
         }
 
-        public string returnUserInfo()
+        public string ReturnUserInfo()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -60,7 +60,7 @@ namespace KrisiFy.DataStore
             return sb.ToString();
         }
 
-        public string returnListenerInfo()
+        public string ReturnListenerInfo()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -125,10 +125,11 @@ namespace KrisiFy.DataStore
                     }
                 }
             }
+
             return sb.ToString();
         }
 
-        public string returnArtistInfo()
+        public string ReturnArtistInfo()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -174,10 +175,11 @@ namespace KrisiFy.DataStore
                     }
                 }
             }
+
             return sb.ToString();
         }
 
-        public string returnAlbumInfo()
+        public string ReturnAlbumInfo()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -223,10 +225,11 @@ namespace KrisiFy.DataStore
                     }
                 }
             }
+
             return sb.ToString();
         }
 
-        public string returnSongInfo()
+        public string ReturnSongInfo()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -243,10 +246,11 @@ namespace KrisiFy.DataStore
                     sb.Append(String.Format("[{0}]</song>\n", song.Duration));
                 }
             }
+
             return sb.ToString();
         }
 
-        public string returnPlaylistInfo()
+        public string ReturnPlaylistInfo()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -273,6 +277,7 @@ namespace KrisiFy.DataStore
                     }
                 }
             }
+
             return sb.ToString();
         }
     }

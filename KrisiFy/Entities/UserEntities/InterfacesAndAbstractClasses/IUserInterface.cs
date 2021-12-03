@@ -2,8 +2,8 @@
 {
     public interface IUserInterface
     {
-        void infoPrint();
-        void playlistsPrint();
-        void songsAndLengthPrint(string playlistName);
+        void InfoPrint();
+        void PlaylistsPrint();
+        void SongsAndLengthPrint(string playlistName);
     }
 }
