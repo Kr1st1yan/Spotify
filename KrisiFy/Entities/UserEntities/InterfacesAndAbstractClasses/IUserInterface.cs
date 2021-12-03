@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace KrisiFy.Interfaces
+﻿namespace KrisiFy.Interfaces
 {
-   public interface IUserInterface
+    public interface IUserInterface
     {
-        void infoPrint();
-
-        void playlistsPrint();
-
-        void songsInPlaylistsAndLengthPrint();
-
+        void InfoPrint();
+        void PlaylistsPrint();
+        void SongsAndLengthPrint(string playlistName);
     }
 }

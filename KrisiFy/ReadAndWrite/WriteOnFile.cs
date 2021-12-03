@@ -10,20 +10,12 @@ namespace KrisiFy.ReadAndWriteFiles
     class WriteOnFile
     {
         private List<string> data = new List<string>();
-
         public List<string> Data { get => data; set => data = value; }
-
-        /* public async Task write()
-         {
-             await File.WriteAllLinesAsync("E:\\Spotify\\KrisiFy\\ReadAndWriteFiles\\WriteFile.txt", data);
-         }*/
-
-        public async Task ExampleAsync(string input)
+        public async Task Write(string input)
         {
-            using StreamWriter file = new StreamWriter("E:\\Spotify\\KrisiFy\\ReadAndWriteFiles\\WriteFile.txt", append: true);
+            File.WriteAllText(Constants.PATH_TO_TEXT_FILE, String.Empty);
+            using StreamWriter file = new StreamWriter(Constants.PATH_TO_TEXT_FILE, append: true);
             await file.WriteLineAsync(input);
         }
-
-
     }
 }

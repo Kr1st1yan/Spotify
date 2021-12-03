@@ -13,8 +13,16 @@ namespace KrisiFy.Entities.ContentEntities
         private Album album;
         private Artist artist;
         private string genre;
-        private DateTime outYear;
-        public Song(string name, DateTime duration, Album album, Artist artist, string genre, DateTime outYear) : base(name, duration)
+        private string outYear;
+        public Song(string name) : base(name)
+        {
+
+        }
+        public Song(string name, string duration) : base(name, duration)
+        {
+
+        }
+        public Song(string name, string duration, Album album, Artist artist, string genre, string outYear) : base(name, duration)
         {
             this.Album = album;
             this.Artist = artist;
@@ -23,8 +31,8 @@ namespace KrisiFy.Entities.ContentEntities
         }
 
         public string Genre { get => genre; set => genre = value; }
-        public DateTime OutYear { get => outYear; set => outYear = value; }
-        internal Album Album { get => album; set => album = value; }
-        internal Artist Artist { get => artist; set => artist = value; }
+        public Album Album { get => album; set => album = value; }
+        public Artist Artist { get => artist; set => artist = value; }
+        public string OutYear { get => outYear; set => outYear = value; }
     }
 }

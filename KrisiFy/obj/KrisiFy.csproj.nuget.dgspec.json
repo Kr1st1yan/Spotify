@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Spotify\\KrisiFy\\KrisiFy.csproj": {}
+    "E:\\Spotify\\Spotify\\KrisiFy\\KrisiFy.csproj": {}
   },
   "projects": {
-    "E:\\Spotify\\KrisiFy\\KrisiFy.csproj": {
+    "E:\\Spotify\\Spotify\\KrisiFy\\KrisiFy.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Spotify\\KrisiFy\\KrisiFy.csproj",
+        "projectUniqueName": "E:\\Spotify\\Spotify\\KrisiFy\\KrisiFy.csproj",
         "projectName": "KrisiFy",
-        "projectPath": "E:\\Spotify\\KrisiFy\\KrisiFy.csproj",
+        "projectPath": "E:\\Spotify\\Spotify\\KrisiFy\\KrisiFy.csproj",
         "packagesPath": "C:\\Users\\konstantin.paynov\\.nuget\\packages\\",
-        "outputPath": "E:\\Spotify\\KrisiFy\\obj\\",
+        "outputPath": "E:\\Spotify\\Spotify\\KrisiFy\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\konstantin.paynov\\AppData\\Roaming\\NuGet\\NuGet.Config",
